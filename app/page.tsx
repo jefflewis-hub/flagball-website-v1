@@ -218,7 +218,7 @@ export default function Home() {
                 </svg>
               </div>
               <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
-                pull <span className="font-bold text-flagball-red">flag</span>{" "}
+                Pull <span className="font-bold text-flagball-red">flag</span>{" "}
                 to down the ball carrier
               </div>
             </div>
@@ -246,7 +246,7 @@ export default function Home() {
                 </svg>
               </div>
               <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
-                open-hand{" "}
+                Open-hand{" "}
                 <span className="font-bold text-flagball-red">blocking</span>{" "}
                 between the waist and shoulders
               </div>
