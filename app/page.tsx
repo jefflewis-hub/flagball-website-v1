@@ -247,9 +247,8 @@ export default function Home() {
                 </svg>
               </div>
               <div className="text-xl md:text-2xl text-gray-900 text-left">
-                <span className="font-bold text-flagball-red">
-                  full contact blocking
-                </span>{" "}
+                open hand{" "}
+                <span className="font-bold text-flagball-red">blocking</span>{" "}
                 between the waist and shoulders
               </div>
             </div>
