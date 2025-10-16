@@ -143,7 +143,7 @@ export default function Home() {
               <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
                 <div
                   className="font-bold text-flagball-red leading-none text-center"
-                  style={{ fontSize: "49px" }}
+                  style={{ fontSize: "50px" }}
                 >
                   11
                 </div>
