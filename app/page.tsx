@@ -280,6 +280,8 @@ export default function Home() {
             >
               <video
                 ref={videoRef}
+                preload="metadata"
+                playsInline
                 className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl"
               >
                 <source
