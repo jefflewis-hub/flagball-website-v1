@@ -218,9 +218,8 @@ export default function Home() {
                 </svg>
               </div>
               <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
-                pull the ball carrier's{" "}
-                <span className="font-bold text-flagball-red">flag</span> to
-                down them
+                pull <span className="font-bold text-flagball-red">flag</span> to
+                down the ball carrier
               </div>
             </div>
 
