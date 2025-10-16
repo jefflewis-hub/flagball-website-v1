@@ -141,7 +141,7 @@ export default function Home() {
             {/* Card 1: 11-on-11 */}
             <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-10 pt-6 md:pt-10 border-t border-b border-gray-300">
               <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
-                <div className="text-5xl md:text-5xl font-bold text-flagball-red leading-none text-center">
+                <div className="font-bold text-flagball-red leading-none text-center" style={{ fontSize: '49px' }}>
                   11
                 </div>
               </div>
