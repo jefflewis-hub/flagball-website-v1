@@ -139,7 +139,7 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 gap-0">
             {/* Card 1: 11-on-11 */}
-            <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-10 border-b border-gray-300">
+            <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-10 pt-6 md:pt-10 border-t border-b border-gray-300">
               <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
                 <div className="text-5xl md:text-5xl font-bold text-flagball-red leading-none text-center">
                   11
@@ -225,7 +225,7 @@ export default function Home() {
             </div>
 
             {/* Card 3: Blocking */}
-            <div className="flex items-center gap-8 md:gap-10 pt-6 md:pt-10">
+            <div className="flex items-center gap-8 md:gap-10 pt-6 md:pt-10 pb-6 md:pb-10 border-b border-gray-300">
               <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
                 <svg
                   viewBox="0 0 92 92"
@@ -292,9 +292,7 @@ export default function Home() {
               <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
                 Roster
               </span>
-              <span className="text-xl md:text-2xl">
-                30 players per team
-              </span>
+              <span className="text-xl md:text-2xl">30 players per team</span>
             </div>
           </div>
         </div>
