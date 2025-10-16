@@ -88,7 +88,7 @@ export default function Home() {
             alt="FLAGBALL"
             width={600}
             height={150}
-            className="mb-5 w-[75dvw] md:w-auto max-w-xl h-auto md:h-32"
+            className="mb-4 w-[75dvw] md:w-auto max-w-xl h-auto md:h-32"
             priority
           />
           <p className="text-white text-xl md:text-2xl tracking-wide font-medium">
@@ -282,8 +282,8 @@ export default function Home() {
                 ref={videoRef}
                 preload="metadata"
                 playsInline
-                poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_black_v2.png"
-                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-white object-contain p-8 md:p-12"
+                poster="/poster.png"
+                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-white object-cover"
               >
                 <source
                   src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
