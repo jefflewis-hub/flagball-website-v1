@@ -30,7 +30,7 @@ export default function RulesPage() {
 
       {/* Content */}
       <div className="relative z-10 flex items-start justify-center h-[100dvh] md:h-full p-0 md:p-4 pt-16 md:pt-20">
-        <div className="w-[100dvw] md:w-auto lg:w-[max(60dvw,950px)] h-[100dvh] md:h-[80vh]">
+        <div className="w-[100dvw] md:w-auto lg:w-[max(60dvw,950px)] h-[calc(100dvh-4rem)] md:h-[80vh]">
           <RulesModule />
         </div>
       </div>

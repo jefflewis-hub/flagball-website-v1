@@ -88,7 +88,7 @@ export default function Home() {
             alt="FLAGBALL"
             width={600}
             height={150}
-            className="mb-8 w-[75dvw] md:w-auto max-w-xl h-auto md:h-32"
+            className="mb-5 w-[75dvw] md:w-auto max-w-xl h-auto md:h-32"
             priority
           />
           <p className="text-white text-xl md:text-2xl tracking-wide font-medium">
