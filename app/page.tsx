@@ -88,7 +88,7 @@ export default function Home() {
           playsInline
           preload="auto"
           className="md:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
-          style={{ contentVisibility: 'auto' }}
+          style={{ contentVisibility: "auto" }}
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
@@ -104,7 +104,7 @@ export default function Home() {
           playsInline
           preload="auto"
           className="hidden md:block absolute top-0 left-0 w-full h-full object-cover"
-          style={{ contentVisibility: 'auto' }}
+          style={{ contentVisibility: "auto" }}
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
@@ -269,7 +269,7 @@ export default function Home() {
                 Regular Season
               </span>
               <span className="text-xl md:text-2xl">
-                6 teams will compete in a 16-game season
+                6 teams will compete in a 16-game season from June - August
               </span>
             </div>
             <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
@@ -277,7 +277,7 @@ export default function Home() {
                 Playoffs
               </span>
               <span className="text-xl md:text-2xl">
-                4 teams qualify for a single-elimination playoff
+                4 teams. Win or go home
               </span>
             </div>
             <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
@@ -293,7 +293,7 @@ export default function Home() {
                 Roster
               </span>
               <span className="text-xl md:text-2xl">
-                Teams may carry a maximum of 30 players
+                30 players per team
               </span>
             </div>
           </div>
