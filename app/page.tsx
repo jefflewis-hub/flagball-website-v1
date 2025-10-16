@@ -270,7 +270,7 @@ export default function Home() {
                 Regular Season
               </span>
               <span className="text-xl md:text-2xl">
-                6 teams each play 16-games
+                6 teams each play 16 games
               </span>
             </div>
             <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
