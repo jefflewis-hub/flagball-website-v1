@@ -82,7 +82,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-[100dvh] md:h-full px-5 md:px-4">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-5 md:px-4">
           <Image
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
             alt="FLAGBALL"
@@ -274,7 +274,7 @@ export default function Home() {
           </h2>
           <div>
             <div
-              className="relative w-full cursor-pointer"
+              className="relative w-full cursor-pointer bg-[#1F1F1E] rounded-lg"
               style={{ paddingBottom: "56.25%" }}
               onClick={handleVideoClick}
             >
@@ -282,7 +282,8 @@ export default function Home() {
                 ref={videoRef}
                 preload="metadata"
                 playsInline
-                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl"
+                poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_black_v2.png"
+                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-[#1F1F1E]"
               >
                 <source
                   src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
@@ -326,13 +327,9 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#1F1F1E] py-12 md:py-16 px-5 md:px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <Image
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
-            alt="FLAGBALL"
-            width={200}
-            height={50}
-            className="mx-auto mb-6 h-12 w-auto"
-          />
+          <h2 className="text-white text-2xl md:text-3xl font-bold uppercase mb-6">
+            Flag for the whole team
+          </h2>
           <p className="text-gray-400 text-sm md:text-base">
             © {new Date().getFullYear()} Flagball. All rights reserved.
           </p>
