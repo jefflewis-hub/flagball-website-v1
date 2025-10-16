@@ -4,7 +4,7 @@ import { useState } from "react";
 
 interface FAQItem {
   question: string;
-  answer: string;
+  answer: string | React.ReactNode;
 }
 
 interface FAQSection {
@@ -19,21 +19,30 @@ const faqData: FAQSection[] = [
       {
         question: "What is Flagball?",
         answer:
-          "Hybrid between Flag and Traditional Football. Its 11-on-11 with full blocking but flag-pulling on ball carriers instead of tackling",
+          "Hybrid between Flag and Traditional Football. Flagball is 11-on-11 with full blocking but flag-pulling on ball carriers instead of tackling",
       },
       {
-        question: "How does the blocking work?",
+        question: "How does blocking without pads work?",
         answer:
-          "Offensive players may block a defender with their hands on the front of an opposing player between the belly-button and the shoulders. No blocking is allowed below the waist or above the shoulders. Offensive players may not use their head or shoulders to block a defender.",
+          "Offensive players must engage a defender (1) from the front, (2) with open-hands (no shoulders), and (3) between the defender's waist and shoulders.",
       },
       {
-        question: "What are the main rule differences from tackle football?",
+        question: "What is the main difference from tackle football?",
         answer: "Flag pulling instead of tackling",
       },
       {
-        question: "Is scoring similar to traditional football?",
-        answer:
-          "Touchdown is 6 points. Extra point field goal is 1 point. Teams may opt for a 2 or 3 point conversion after a touchdown, instead of an extra point",
+        question: "Is scoring the same as traditional football?",
+        answer: (
+          <>
+            Touchdown is 6 points.
+            <br />
+            <br />
+            Extra point field goal is 1 point.
+            <br />
+            <br />
+            Teams may opt for a 2 or 3 point conversion after a touchdown, instead of an extra point kick
+          </>
+        ),
       },
       {
         question: "How long are the games?",
@@ -47,8 +56,14 @@ const faqData: FAQSection[] = [
     items: [
       {
         question: "How does the season work?",
-        answer:
-          "6 teams compete in a 16-game regular season, playing 2 games per week for 8 weeks. The top 4 teams will qualify for the playoffs — the winners of the semi-finals game will square off in the championship",
+        answer: (
+          <>
+            6 teams compete in a 16-game regular season, playing 2 games per week for 8 weeks.
+            <br />
+            <br />
+            The top 4 teams will qualify for the playoffs — the winners of the semi-finals game will square off in the championship
+          </>
+        ),
       },
       {
         question: "When will the season be played?",
@@ -60,14 +75,20 @@ const faqData: FAQSection[] = [
     title: "FANS",
     items: [
       {
-        question: "Where can I watch?",
+        question: "Where can I watch FLAGBALL?",
         answer:
           "Games will be streamed by @Flagball on Youtube, X, and Instagram",
       },
       {
         question: "Who are the players?",
-        answer:
-          "Flagball players are selected from a variety of backgrounds at the highest level of sports. Many of the players on rosters this spring have won gold medals in Flag Football and will compete for the olympic flag football team.",
+        answer: (
+          <>
+            Flagball rosters bring together the best athletes in the world, from the highest level of a variety of sports.
+            <br />
+            <br />
+            Many FLAGBALL players have won World Championships in Flag Football and will compete for the Olympic Flag Football teams of their respective countries.
+          </>
+        ),
       },
     ],
   },
