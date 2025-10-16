@@ -8,9 +8,11 @@ import { FaStopCircle } from "react-icons/fa";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const storyVideoRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -44,6 +46,34 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lazy load trailer video with Intersection Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !shouldLoadVideo) {
+            setShouldLoadVideo(true);
+          }
+        });
+      },
+      {
+        rootMargin: "100px", // Start loading 100px before video is visible
+        threshold: 0.1,
+      }
+    );
+
+    const currentRef = storyVideoRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [shouldLoadVideo]);
+
   return (
     <main className="relative w-[100dvw] md:w-screen overflow-x-hidden">
       <Navigation bgColor={isScrolled ? "#1F1F1E" : "transparent"} />
@@ -56,6 +86,7 @@ export default function Home() {
           loop
           muted
           playsInline
+          preload="auto"
           className="md:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
         >
           <source
@@ -70,6 +101,7 @@ export default function Home() {
           loop
           muted
           playsInline
+          preload="auto"
           className="hidden md:block absolute top-0 left-0 w-full h-full object-cover"
         >
           <source
@@ -272,7 +304,7 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
             Our Story
           </h2>
-          <div>
+          <div ref={storyVideoRef}>
             <div
               className="relative w-full cursor-pointer bg-white rounded-lg"
               style={{ paddingBottom: "56.25%" }}
@@ -280,15 +312,17 @@ export default function Home() {
             >
               <video
                 ref={videoRef}
-                preload="metadata"
+                preload="none"
                 playsInline
-                poster="/poster.png"
+                poster="/poster.jpg"
                 className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-white object-cover"
               >
-                <source
-                  src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
-                  type="video/mp4"
-                />
+                {shouldLoadVideo && (
+                  <source
+                    src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
+                    type="video/mp4"
+                  />
+                )}
                 Your browser does not support the video tag.
               </video>
 
