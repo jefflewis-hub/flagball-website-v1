@@ -360,7 +360,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#1F1F1E] py-12 md:py-16 px-5 md:px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-white text-2xl md:text-3xl font-bold uppercase mb-6">
+          <h2 className="text-white text-xl sm:text-2xl md:text-3xl font-bold uppercase mb-6">
             Flag for the whole team
           </h2>
           <p className="text-gray-400 text-sm md:text-base">
