@@ -82,7 +82,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-5 md:px-4">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-5 md:px-4 pt-16 md:pt-0">
           <Image
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
             alt="FLAGBALL"
@@ -274,7 +274,7 @@ export default function Home() {
           </h2>
           <div>
             <div
-              className="relative w-full cursor-pointer bg-[#1F1F1E] rounded-lg"
+              className="relative w-full cursor-pointer bg-white rounded-lg"
               style={{ paddingBottom: "56.25%" }}
               onClick={handleVideoClick}
             >
@@ -283,7 +283,7 @@ export default function Home() {
                 preload="metadata"
                 playsInline
                 poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_black_v2.png"
-                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-[#1F1F1E]"
+                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-white object-contain p-8 md:p-12"
               >
                 <source
                   src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
