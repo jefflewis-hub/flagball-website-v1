@@ -88,6 +88,7 @@ export default function Home() {
           playsInline
           preload="auto"
           className="md:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
+          style={{ contentVisibility: 'auto' }}
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
@@ -103,6 +104,7 @@ export default function Home() {
           playsInline
           preload="auto"
           className="hidden md:block absolute top-0 left-0 w-full h-full object-cover"
+          style={{ contentVisibility: 'auto' }}
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
