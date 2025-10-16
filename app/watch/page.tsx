@@ -32,7 +32,7 @@ export default function WatchPage() {
   };
 
   return (
-    <main className="relative w-screen h-screen overflow-hidden bg-black">
+    <main className="relative w-[100dvw] h-[100dvh] md:w-screen md:h-screen overflow-hidden bg-black">
       {/* Close Button */}
       <button
         onClick={handleClose}
@@ -43,13 +43,16 @@ export default function WatchPage() {
       </button>
 
       {/* Video Container - Click to toggle controls */}
-      <div onClick={toggleControls} className="w-full h-full cursor-pointer">
+      <div
+        onClick={toggleControls}
+        className="w-[100dvw] h-[100dvh] md:w-full md:h-full cursor-pointer"
+      >
         {/* Full Screen Video */}
         <video
           ref={videoRef}
           autoPlay
           controls={showControls}
-          className="w-full h-full object-contain"
+          className="w-[100dvw] h-[100dvh] md:w-full md:h-full object-contain"
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"

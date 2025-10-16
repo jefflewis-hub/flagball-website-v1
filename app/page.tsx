@@ -2,7 +2,7 @@
 
 import Navigation from "@/components/Navigation";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FaCirclePlay } from "react-icons/fa6";
 import { FaStopCircle } from "react-icons/fa";
 
@@ -10,6 +10,7 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -32,19 +33,30 @@ export default function Home() {
       setShowControls(!showControls);
     }
   };
+
+  // Detect scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <main className="relative w-screen overflow-x-hidden">
-      <Navigation />
+    <main className="relative w-[100dvw] md:w-screen overflow-x-hidden">
+      <Navigation bgColor={isScrolled ? "#1F1F1E" : "transparent"} />
 
       {/* Hero Section */}
-      <section className="relative w-full h-screen overflow-hidden">
+      <section className="relative w-[100dvw] h-[100dvh] md:w-full md:h-screen overflow-hidden">
         {/* Video Background - Mobile */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="md:hidden absolute top-0 left-0 w-full h-full object-cover"
+          className="md:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
@@ -67,16 +79,16 @@ export default function Home() {
         </video>
 
         {/* Dark Overlay */}
-        <div className="absolute top-0 left-0 w-full h-full bg-[#2E2E2E] opacity-70" />
+        <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
+        <div className="relative z-10 flex flex-col items-center justify-center h-[100dvh] md:h-full px-5 md:px-4">
           <Image
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
             alt="FLAGBALL"
             width={600}
             height={150}
-            className="mb-8 w-[75vw] max-w-xl h-auto md:w-auto md:h-32"
+            className="mb-8 w-[75dvw] md:w-auto max-w-xl h-auto md:h-32"
             priority
           />
           <p className="text-white text-xl md:text-2xl tracking-wide font-medium">
@@ -86,28 +98,33 @@ export default function Home() {
       </section>
 
       {/* The Game Section */}
-      <section className="bg-white py-16 md:py-24 px-4">
-        <div className="max-w-[1000px] mx-auto">
+      <section className="bg-white py-16 md:py-24 px-5 md:px-4">
+        <div className="max-w-[850px] mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
             The Game
           </h2>
-          <div className="grid grid-cols-1 gap-10 md:gap-16">
+          <div className="grid grid-cols-1 gap-0">
             {/* Card 1: 11-on-11 */}
-            <div className="flex items-center gap-8 md:gap-10">
-              <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center flex-shrink-0">
-                <div className="text-7xl md:text-8xl font-bold text-flagball-red leading-none text-center">
+            <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-10 border-b border-gray-300">
+              <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
+                <div className="text-5xl md:text-5xl font-bold text-flagball-red leading-none text-center">
                   11
                 </div>
               </div>
-              <div className="text-2xl md:text-3xl text-gray-900 text-left">
-                <span className="font-bold text-flagball-red">on-11</span>.
-                There are 5 receivers, 5 lineman, and a QB
+              <div className="text-xl md:text-2xl text-gray-900 text-left">
+                <span className="font-bold text-flagball-red">on-11</span>.{" "}
+                <span className="md:hidden">
+                  5 receivers, 5 lineman, and a QB
+                </span>
+                <span className="hidden md:inline">
+                  There are 5 receivers, 5 lineman, and a QB
+                </span>
               </div>
             </div>
 
             {/* Card 2: Flag */}
-            <div className="flex items-center gap-8 md:gap-10">
-              <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 py-6 md:py-10 border-b border-gray-300">
+              <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
                 <svg
                   viewBox="0 0 34 104"
                   fill="none"
@@ -166,7 +183,7 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <div className="text-2xl md:text-3xl text-gray-900 text-left">
+              <div className="text-xl md:text-2xl text-gray-900 text-left">
                 pull the ball carrier's{" "}
                 <span className="font-bold text-flagball-red">flag</span> to
                 down them
@@ -174,8 +191,8 @@ export default function Home() {
             </div>
 
             {/* Card 3: Blocking */}
-            <div className="flex items-center gap-8 md:gap-10">
-              <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 pt-6 md:pt-10">
+              <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
                 <svg
                   viewBox="0 0 92 92"
                   fill="none"
@@ -195,7 +212,7 @@ export default function Home() {
                   </defs>
                 </svg>
               </div>
-              <div className="text-2xl md:text-3xl text-gray-900 text-left">
+              <div className="text-xl md:text-2xl text-gray-900 text-left">
                 <span className="font-bold text-flagball-red">
                   full contact blocking
                 </span>{" "}
@@ -207,35 +224,51 @@ export default function Home() {
       </section>
 
       {/* The League Section */}
-      <section className="bg-gray-50 py-16 md:py-24 px-4">
-        <div className="max-w-[1000px] mx-auto">
+      <section className="bg-gray-50 py-16 md:py-24 px-5 md:px-4">
+        <div className="max-w-[850px] mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
             The League
           </h2>
           <div className="grid grid-cols-1 gap-0">
-            <div className="text-2xl md:text-3xl text-gray-900 pb-8 border-b border-gray-300">
-              <span className="font-bold">Regular Season:</span> 6 teams will
-              compete in a 16-game season
+            <div className="flex flex-col md:flex-row text-gray-900 pb-6 border-b border-gray-300">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+                Regular Season
+              </span>
+              <span className="text-xl md:text-2xl">
+                6 teams will compete in a 16-game season
+              </span>
             </div>
-            <div className="text-2xl md:text-3xl text-gray-900 py-8 border-b border-gray-300">
-              <span className="font-bold">Playoffs:</span> The top 4 teams
-              qualify for a single-elimination playoff
+            <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+                Playoffs
+              </span>
+              <span className="text-xl md:text-2xl">
+                4 teams qualify for a single-elimination playoff
+              </span>
             </div>
-            <div className="text-2xl md:text-3xl text-gray-900 py-8 border-b border-gray-300">
-              <span className="font-bold">Schedule:</span> Teams play two games
-              per week for eight weeks
+            <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+                Schedule
+              </span>
+              <span className="text-xl md:text-2xl">
+                Teams play two games per week for eight weeks
+              </span>
             </div>
-            <div className="text-2xl md:text-3xl text-gray-900 pt-8">
-              <span className="font-bold">Roster:</span> Teams may carry a
-              maximum of 30 players
+            <div className="flex flex-col md:flex-row text-gray-900 pt-6">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+                Roster
+              </span>
+              <span className="text-xl md:text-2xl">
+                Teams may carry a maximum of 30 players
+              </span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Our Story Section */}
-      <section className="bg-white py-16 md:py-24 px-4">
-        <div className="max-w-[1000px] mx-auto">
+      <section className="bg-white py-16 md:py-24 px-5 md:px-4">
+        <div className="max-w-[850px] mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
             Our Story
           </h2>
@@ -289,7 +322,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1F1F1E] py-12 md:py-16 px-4">
+      <footer className="bg-[#1F1F1E] py-12 md:py-16 px-5 md:px-4">
         <div className="max-w-7xl mx-auto text-center">
           <Image
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"

@@ -26,7 +26,7 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
       )}
 
       <nav
-        className="fixed top-0 left-0 right-0 z-50"
+        className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
         style={{ backgroundColor: bgColor || "transparent" }}
       >
         <div className="w-full px-4 py-4 md:px-10 md:py-6">

@@ -60,12 +60,12 @@ export default function PartnerPage() {
   };
 
   return (
-    <main className="relative w-screen h-screen overflow-hidden">
+    <main className="relative w-[100dvw] h-[100dvh] md:w-screen md:h-screen overflow-hidden">
       <Navigation />
 
       {/* Background Image - Moved Down */}
       <div
-        className="absolute top-0 left-0 w-full h-full bg-cover"
+        className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-cover"
         style={{
           backgroundImage:
             "url(https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_partner_background_v2.png)",
@@ -74,11 +74,11 @@ export default function PartnerPage() {
       />
 
       {/* Dark Overlay 70% */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[#2E2E2E] opacity-70" />
+      <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
 
       {/* Content */}
-      <div className="relative z-10 flex items-center justify-center h-full px-4">
-        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 md:p-8 w-full lg:w-[35%] shadow-2xl mt-12 md:mt-0">
+      <div className="relative z-10 flex items-center justify-center h-[100dvh] md:h-full px-4">
+        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 md:p-8 w-full lg:w-[500px] shadow-2xl mt-12 md:mt-0">
           <button
             onClick={() => window.history.back()}
             className="mb-4 md:mb-6 text-gray-500 hover:opacity-80 flex items-center gap-2 transition-opacity"

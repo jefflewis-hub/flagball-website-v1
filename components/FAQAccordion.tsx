@@ -118,7 +118,7 @@ export default function FAQAccordion() {
       </h1>
 
       {/* Table of Contents - Left Side on Desktop Only */}
-      <div className="hidden md:block md:fixed md:left-20 md:top-40 md:w-64">
+      <div className="hidden md:block md:fixed md:left-12 md:top-40 md:w-64">
         <h3 className="text-4xl font-bold text-flagball-red mb-8">FAQS</h3>
         <nav className="flex flex-col gap-6">
           {faqData.map((section, index) => (
@@ -134,7 +134,7 @@ export default function FAQAccordion() {
       </div>
 
       {/* Main Content - Centered */}
-      <div className="max-w-3xl mx-auto space-y-0 md:space-y-12">
+      <div className="max-w-3xl md:max-w-[700px] mx-auto space-y-0 md:space-y-12">
         {faqData.map((section, sectionIndex) => {
           const sectionIsOpen = isSectionOpen(sectionIndex);
           const isLastSection = sectionIndex === faqData.length - 1;
@@ -152,7 +152,7 @@ export default function FAQAccordion() {
                 onClick={() => toggleSection(sectionIndex)}
                 className="w-full text-left md:pointer-events-none border-t md:border-t-0 border-flagball-red md:border-b-4 py-5 md:py-0"
               >
-                <h2 className="text-xl md:text-3xl font-bold text-flagball-red px-6 md:px-0 md:mb-6 md:pb-3 flex justify-between items-center md:block">
+                <h2 className="text-xl md:text-3xl font-bold text-flagball-red px-6 md:px-0 md:pb-3 flex justify-between items-center md:block">
                   <span>{section.title}</span>
                   <svg
                     className={`w-5 h-5 md:hidden text-flagball-red transform transition-transform duration-300 ease-in-out flex-shrink-0 ${
@@ -176,7 +176,7 @@ export default function FAQAccordion() {
               <div
                 className={`md:block ${
                   sectionIsOpen ? "block" : "hidden"
-                } md:space-y-4 space-y-3 pb-6 md:pb-8`}
+                } md:space-y-4 space-y-3 pb-6 md:pb-8 md:pt-10`}
               >
                 {section.items.map((item, itemIndex) => {
                   const itemIsOpen = isOpen(sectionIndex, itemIndex);
