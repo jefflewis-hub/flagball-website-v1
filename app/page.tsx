@@ -268,7 +268,7 @@ export default function Home() {
                 Regular Season
               </span>
               <span className="text-xl md:text-2xl">
-                6 teams will compete in a 16-game season from June - August
+                6 teams compete in a 16-game season from June - August
               </span>
             </div>
             <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
