@@ -132,7 +132,7 @@ export default function Home() {
       </section>
 
       {/* The Game Section */}
-      <section className="bg-white py-16 md:py-24 px-5 md:px-4">
+      <section className="bg-white py-16 md:py-24 px-6 md:px-4">
         <div className="max-w-[850px] mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
             The Game
@@ -257,7 +257,7 @@ export default function Home() {
       </section>
 
       {/* The League Section */}
-      <section className="bg-gray-50 py-16 md:py-24 px-5 md:px-4">
+      <section className="bg-gray-50 py-16 md:py-24 px-6 md:px-4">
         <div className="max-w-[850px] mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
             The League
@@ -298,7 +298,7 @@ export default function Home() {
       </section>
 
       {/* Our Story Section */}
-      <section className="bg-white py-16 md:py-24 px-5 md:px-4">
+      <section className="bg-white py-16 md:py-24 px-6 md:px-4">
         <div className="max-w-[850px] mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
             Our Story
