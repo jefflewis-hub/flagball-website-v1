@@ -1,103 +1,308 @@
+"use client";
+
+import Navigation from "@/components/Navigation";
 import Image from "next/image";
+import { useRef, useState } from "react";
+import { FaCirclePlay } from "react-icons/fa6";
+import { FaStopCircle } from "react-icons/fa";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showControls, setShowControls] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handlePlayClick = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+      setShowControls(false);
+    }
+  };
+
+  const handleStopClick = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+      setShowControls(true);
+    }
+  };
+
+  const handleVideoClick = () => {
+    if (isPlaying) {
+      setShowControls(!showControls);
+    }
+  };
+  return (
+    <main className="relative w-screen overflow-x-hidden">
+      <Navigation />
+
+      {/* Hero Section */}
+      <section className="relative w-full h-screen overflow-hidden">
+        {/* Video Background - Mobile */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="md:hidden absolute top-0 left-0 w-full h-full object-cover"
+        >
+          <source
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
+            type="video/mp4"
+          />
+        </video>
+
+        {/* Video Background - Desktop */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hidden md:block absolute top-0 left-0 w-full h-full object-cover"
+        >
+          <source
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
+            type="video/mp4"
+          />
+        </video>
+
+        {/* Dark Overlay */}
+        <div className="absolute top-0 left-0 w-full h-full bg-[#2E2E2E] opacity-70" />
+
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
+          <Image
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
+            alt="FLAGBALL"
+            width={600}
+            height={150}
+            className="mb-8 w-[75vw] max-w-xl h-auto md:w-auto md:h-32"
+            priority
+          />
+          <p className="text-white text-xl md:text-2xl tracking-wide font-medium">
+            Coming June 2026
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      </section>
+
+      {/* The Game Section */}
+      <section className="bg-white py-16 md:py-24 px-4">
+        <div className="max-w-[1000px] mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
+            The Game
+          </h2>
+          <div className="grid grid-cols-1 gap-10 md:gap-16">
+            {/* Card 1: 11-on-11 */}
+            <div className="flex items-center gap-8 md:gap-10">
+              <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center flex-shrink-0">
+                <div className="text-7xl md:text-8xl font-bold text-flagball-red leading-none text-center">
+                  11
+                </div>
+              </div>
+              <div className="text-2xl md:text-3xl text-gray-900 text-left">
+                <span className="font-bold text-flagball-red">on-11</span>.
+                There are 5 receivers, 5 lineman, and a QB
+              </div>
+            </div>
+
+            {/* Card 2: Flag */}
+            <div className="flex items-center gap-8 md:gap-10">
+              <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center flex-shrink-0">
+                <svg
+                  viewBox="0 0 34 104"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
+                  <rect x="1" y="2.34717" width="2" height="5" fill="#FF0000" />
+                  <rect
+                    x="30"
+                    y="2.34717"
+                    width="2"
+                    height="5"
+                    fill="#FF0000"
+                  />
+                  <rect
+                    x="3"
+                    y="9.34717"
+                    width="6"
+                    height="71"
+                    fill="#FF0000"
+                  />
+                  <rect
+                    x="24"
+                    y="9.34717"
+                    width="6"
+                    height="71"
+                    fill="#FF0000"
+                  />
+                  <rect
+                    x="3.2963"
+                    y="77.5931"
+                    width="2.2963"
+                    height="20.1087"
+                    transform="rotate(-45 3.2963 77.5931)"
+                    fill="#FF0000"
+                  />
+                  <rect
+                    x="27.8486"
+                    y="75.9696"
+                    width="2.2963"
+                    height="20.1087"
+                    transform="rotate(45 27.8486 75.9696)"
+                    fill="#FF0000"
+                  />
+                  <path
+                    d="M3.77188 88.402C2.87512 87.5053 2.87512 86.0514 3.77187 85.1546L17.9908 99.3736L16.3671 100.997L3.77188 88.402Z"
+                    fill="#FF0000"
+                  />
+                  <path
+                    d="M29.6443 85.6555C30.541 86.5523 30.541 88.0062 29.6443 88.903L16.4015 102.146L14.7778 100.522L29.6443 85.6555Z"
+                    fill="#FF0000"
+                  />
+                  <path
+                    d="M32.521 3.33681V1.6684C32.521 1.22591 32.4375 0.80155 32.2887 0.488664C32.14 0.175778 31.9382 0 31.7278 0H1.58639C1.37602 0 1.17427 0.175778 1.02552 0.488664C0.876765 0.80155 0.793196 1.22591 0.793196 1.6684V3.33681C0.582827 3.33681 0.381075 3.51258 0.232322 3.82547C0.0835688 4.13836 0 4.56272 0 5.00521C0 5.4477 0.0835688 5.87206 0.232322 6.18495C0.381075 6.49783 0.582827 6.67361 0.793196 6.67361V8.34201C0.793196 8.7845 0.876765 9.20887 1.02552 9.52175C1.17427 9.83464 1.37602 10.0104 1.58639 10.0104H2.37959V88.4253C2.37953 88.7419 2.42229 89.052 2.50287 89.3193C2.58346 89.5867 2.69854 89.8003 2.83468 89.9353L16.319 103.282C16.4248 103.387 16.5403 103.441 16.6571 103.441C16.774 103.441 16.8894 103.387 16.9952 103.282L30.4796 89.9353C30.6157 89.8003 30.7308 89.5867 30.8114 89.3193C30.8919 89.052 30.9347 88.7419 30.9346 88.4253V10.0104H31.7278C31.9382 10.0104 32.14 9.83464 32.2887 9.52175C32.4375 9.20887 32.521 8.7845 32.521 8.34201V6.67361C32.7314 6.67361 32.9332 6.49783 33.0819 6.18495C33.2307 5.87206 33.3142 5.4477 33.3142 5.00521C33.3142 4.56272 33.2307 4.13836 33.0819 3.82547C32.9332 3.51258 32.7314 3.33681 32.521 3.33681ZM29.3483 87.3659L16.6571 99.929L3.96598 87.3659V81.0447L16.319 93.2721C16.4248 93.3764 16.5403 93.4306 16.6571 93.4306C16.774 93.4306 16.8894 93.3764 16.9952 93.2721L29.3483 81.0447V87.3659ZM29.3483 77.3555L16.6571 89.9186L3.96598 77.3555V10.0104H29.3483V77.3555ZM30.9346 6.67361H2.37959V3.33681H30.9346V6.67361Z"
+                    fill="#FF0000"
+                  />
+                </svg>
+              </div>
+              <div className="text-2xl md:text-3xl text-gray-900 text-left">
+                pull the ball carrier's{" "}
+                <span className="font-bold text-flagball-red">flag</span> to
+                down them
+              </div>
+            </div>
+
+            {/* Card 3: Blocking */}
+            <div className="flex items-center gap-8 md:gap-10">
+              <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center flex-shrink-0">
+                <svg
+                  viewBox="0 0 92 92"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
+                  <g clipPath="url(#clip0_5_92)">
+                    <path
+                      d="M67.7422 0H24.2578C10.8821 0 0 10.8821 0 24.2578V40.6094C0 42.0979 1.20678 43.3047 2.69531 43.3047H16.3516V89.3047C16.3516 90.7932 17.5583 92 19.0469 92H72.9531C74.4417 92 75.6484 90.7932 75.6484 89.3047V43.3047H89.3047C90.7932 43.3047 92 42.0979 92 40.6094V24.2578C92 10.8821 81.1179 0 67.7422 0ZM37.9051 5.39062H54.0951C54.0825 5.58199 54.0861 5.22693 54.0861 8.26562C54.0861 12.7242 50.4588 16.3516 46.0002 16.3516C41.5416 16.3516 37.9142 12.7242 37.9142 8.26562V5.57031C37.9141 5.50958 37.9089 5.45028 37.9051 5.39062ZM86.6094 37.9141H75.6484V29.8281C75.6484 28.3396 74.4417 27.1328 72.9531 27.1328C71.4646 27.1328 70.2578 28.3396 70.2578 29.8281V86.6094H21.7422V29.8281C21.7422 28.3396 20.5354 27.1328 19.0469 27.1328C17.5583 27.1328 16.3516 28.3396 16.3516 29.8281V37.9141H5.39062V24.2578C5.39062 13.8544 13.8544 5.39062 24.2578 5.39062H32.5324C32.5198 5.58199 32.5234 5.22693 32.5234 8.26562C32.5234 15.6966 38.569 21.7422 46 21.7422C53.431 21.7422 59.4766 15.6966 59.4766 8.26562C59.4766 5.22585 59.4802 5.58199 59.4676 5.39062H67.7422C78.1456 5.39062 86.6094 13.8544 86.6094 24.2578V37.9141Z"
+                      fill="#FF0000"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_5_92">
+                      <rect width="92" height="92" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+              <div className="text-2xl md:text-3xl text-gray-900 text-left">
+                <span className="font-bold text-flagball-red">
+                  full contact blocking
+                </span>{" "}
+                between the waist and shoulders
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The League Section */}
+      <section className="bg-gray-50 py-16 md:py-24 px-4">
+        <div className="max-w-[1000px] mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
+            The League
+          </h2>
+          <div className="grid grid-cols-1 gap-0">
+            <div className="text-2xl md:text-3xl text-gray-900 pb-8 border-b border-gray-300">
+              <span className="font-bold">Regular Season:</span> 6 teams will
+              compete in a 16-game season
+            </div>
+            <div className="text-2xl md:text-3xl text-gray-900 py-8 border-b border-gray-300">
+              <span className="font-bold">Playoffs:</span> The top 4 teams
+              qualify for a single-elimination playoff
+            </div>
+            <div className="text-2xl md:text-3xl text-gray-900 py-8 border-b border-gray-300">
+              <span className="font-bold">Schedule:</span> Teams play two games
+              per week for eight weeks
+            </div>
+            <div className="text-2xl md:text-3xl text-gray-900 pt-8">
+              <span className="font-bold">Roster:</span> Teams may carry a
+              maximum of 30 players
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Story Section */}
+      <section className="bg-white py-16 md:py-24 px-4">
+        <div className="max-w-[1000px] mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
+            Our Story
+          </h2>
+          <div>
+            <div
+              className="relative w-full cursor-pointer"
+              style={{ paddingBottom: "56.25%" }}
+              onClick={handleVideoClick}
+            >
+              <video
+                ref={videoRef}
+                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl"
+              >
+                <source
+                  src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+
+              {/* Custom Play Button - Always visible when not playing */}
+              {!isPlaying && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePlayClick();
+                  }}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white hover:opacity-80 transition-opacity z-10"
+                  aria-label="Play video"
+                >
+                  <FaCirclePlay size={64} />
+                </button>
+              )}
+
+              {/* Custom Stop Button - Only visible on click while playing */}
+              {isPlaying && showControls && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStopClick();
+                  }}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white hover:opacity-80 transition-opacity z-10"
+                  aria-label="Stop video"
+                >
+                  <FaStopCircle size={64} />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#1F1F1E] py-12 md:py-16 px-4">
+        <div className="max-w-7xl mx-auto text-center">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
+            alt="FLAGBALL"
+            width={200}
+            height={50}
+            className="mx-auto mb-6 h-12 w-auto"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+          <p className="text-gray-400 text-sm md:text-base">
+            © {new Date().getFullYear()} Flagball. All rights reserved.
+          </p>
+        </div>
       </footer>
-    </div>
+    </main>
   );
 }
