@@ -145,7 +145,7 @@ export default function Home() {
                   11
                 </div>
               </div>
-              <div className="text-xl md:text-2xl text-gray-900 text-left">
+              <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
                 <span className="font-bold text-flagball-red">on-11</span>.{" "}
                 <span className="md:hidden">
                   5 receivers, 5 lineman, and a QB
@@ -217,7 +217,7 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <div className="text-xl md:text-2xl text-gray-900 text-left">
+              <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
                 pull the ball carrier's{" "}
                 <span className="font-bold text-flagball-red">flag</span> to
                 down them
@@ -246,7 +246,7 @@ export default function Home() {
                   </defs>
                 </svg>
               </div>
-              <div className="text-xl md:text-2xl text-gray-900 text-left">
+              <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
                 open hand{" "}
                 <span className="font-bold text-flagball-red">blocking</span>{" "}
                 between the waist and shoulders
