@@ -82,25 +82,25 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
             <div className="hidden md:flex gap-12">
               <Link
                 href="/watch"
-                className="text-white hover:opacity-80 transition-opacity text-2xl font-bold"
+                className="text-white hover:opacity-80 transition-opacity text-lg font-bold"
               >
                 Watch
               </Link>
               <Link
                 href="/rules"
-                className="text-white hover:opacity-80 transition-opacity text-2xl font-bold"
+                className="text-white hover:opacity-80 transition-opacity text-lg font-bold"
               >
                 Rules
               </Link>
               <Link
                 href="/partner"
-                className="text-white hover:opacity-80 transition-opacity text-2xl font-bold"
+                className="text-white hover:opacity-80 transition-opacity text-lg font-bold"
               >
                 Partner
               </Link>
               <Link
                 href="/faq"
-                className="text-white hover:opacity-80 transition-opacity text-2xl font-bold"
+                className="text-white hover:opacity-80 transition-opacity text-lg font-bold"
               >
                 FAQ
               </Link>

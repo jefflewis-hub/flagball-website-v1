@@ -60,12 +60,12 @@ export default function PartnerPage() {
   };
 
   return (
-    <main className="relative w-[100dvw] h-[100dvh] md:w-screen md:h-screen overflow-hidden">
+    <main className="relative w-[100dvw] h-[100dvh] min-[500px]:w-screen min-[500px]:h-screen overflow-hidden">
       <Navigation />
 
-      {/* Background Image - Moved Down */}
+      {/* Background Image */}
       <div
-        className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-cover"
+        className="absolute top-0 left-0 w-[100dvw] h-[100dvh] min-[500px]:w-full min-[500px]:h-full bg-cover"
         style={{
           backgroundImage:
             "url(https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_partner_background_v2.png)",
@@ -74,23 +74,26 @@ export default function PartnerPage() {
       />
 
       {/* Dark Overlay 70% */}
-      <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
+      <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] min-[500px]:w-full min-[500px]:h-full bg-[#2E2E2E] opacity-70" />
 
       {/* Content */}
-      <div className="relative z-10 flex items-center justify-center h-[100dvh] md:h-full px-4">
-        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 md:p-8 w-full lg:w-[35%] lg:min-w-[500px] lg:max-w-[750px] shadow-2xl mt-12 md:mt-0">
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center px-4 py-[calc(4rem+1rem)] pb-4">
+        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-[min(4vmin,2rem)] w-full min-[500px]:w-[35%] min-[500px]:min-w-[500px] min-[500px]:max-w-[750px] shadow-2xl max-h-[calc(100dvh-5rem)] min-[500px]:max-h-[calc(100vh-5rem)] overflow-y-auto">
           <button
             onClick={() => window.history.back()}
-            className="mb-4 md:mb-6 text-gray-400 hover:opacity-80 flex items-center gap-2 transition-opacity"
+            className="mb-[min(3vmin,1.5rem)] text-gray-400 hover:opacity-80 flex items-center gap-2 transition-opacity"
           >
-            <IoArrowBackCircle size={32} className="md:w-10 md:h-10" />
+            <IoArrowBackCircle
+              size={32}
+              className="min-[500px]:w-10 min-[500px]:h-10"
+            />
           </button>
 
-          <form onSubmit={handleSubmit} className="space-y-3 md:space-y-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:gap-4 pb-3 md:pb-6 border-b border-gray-400">
+          <form onSubmit={handleSubmit} className="space-y-[min(3vmin,1.5rem)]">
+            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
               <label
                 htmlFor="firstName"
-                className="block text-gray-800 font-medium mb-2 lg:mb-0 lg:w-48 text-base md:text-xl"
+                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
               >
                 First Name
               </label>
@@ -102,14 +105,14 @@ export default function PartnerPage() {
                 onChange={handleChange}
                 required
                 placeholder="name"
-                className="w-full lg:flex-1 px-3 md:px-4 py-2 md:py-4 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm md:text-base"
+                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
               />
             </div>
 
-            <div className="flex flex-col lg:flex-row lg:items-center lg:gap-4 pb-3 md:pb-6 border-b border-gray-400">
+            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
               <label
                 htmlFor="email"
-                className="block text-gray-800 font-medium mb-2 lg:mb-0 lg:w-48 text-base md:text-xl"
+                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
               >
                 Email
               </label>
@@ -121,14 +124,14 @@ export default function PartnerPage() {
                 onChange={handleChange}
                 required
                 placeholder="email"
-                className="w-full lg:flex-1 px-3 md:px-4 py-2 md:py-4 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm md:text-base"
+                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
               />
             </div>
 
-            <div className="flex flex-col lg:flex-row lg:items-center lg:gap-4 pb-3 md:pb-6 border-b border-gray-400">
+            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
               <label
                 htmlFor="organization"
-                className="block text-gray-800 font-medium mb-2 lg:mb-0 lg:w-48 text-base md:text-xl"
+                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
               >
                 Organization
               </label>
@@ -140,14 +143,14 @@ export default function PartnerPage() {
                 onChange={handleChange}
                 required
                 placeholder="organization"
-                className="w-full lg:flex-1 px-3 md:px-4 py-2 md:py-4 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm md:text-base"
+                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
               />
             </div>
 
-            <div className="flex flex-col lg:flex-row lg:items-center lg:gap-4">
+            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4">
               <label
                 htmlFor="organizationWebsite"
-                className="block text-gray-800 font-medium mb-2 lg:mb-0 lg:w-48 text-base md:text-xl"
+                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
               >
                 Website
               </label>
@@ -159,15 +162,15 @@ export default function PartnerPage() {
                 onChange={handleChange}
                 required
                 placeholder="website"
-                className="w-full lg:flex-1 px-3 md:px-4 py-2 md:py-4 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm md:text-base"
+                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
               />
             </div>
 
-            <div className="border-t border-gray-400 pt-4 md:pt-6 mt-4 md:mt-8">
+            <div className="border-t border-gray-400 pt-[min(3vmin,1.5rem)] mt-[min(4vmin,2rem)]">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-flagball-red text-white py-3 md:py-4 rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide text-base md:text-lg"
+                className="w-full bg-flagball-red text-white py-[min(2vmin,1rem)] rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide text-base min-[500px]:text-lg"
               >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>

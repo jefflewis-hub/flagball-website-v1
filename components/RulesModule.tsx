@@ -290,6 +290,8 @@ g) A Team or Referee Time Out
 
 **6.3. End of Field:** Both Teams will defend the End Zone that was the target of the Game's initial Kick-off.
 
+**6.4. Blitz:** In Overtime, each team will receive 1 Blitz per Overtime period.
+
 **Conclusion:** The team leading at the conclusion of Overtime wins the game. If the score is tied at the end of the first Overtime period, an additional Overtime period will be played.`,
   },
   {
@@ -311,7 +313,9 @@ g) A Team or Referee Time Out
 
 **7.5.2.** If the Defense intercepts the ball and returns it to the Opposing End Zone, they will be awarded 2 points.
 
-**7.5.3.** A safety on a conversion – the appropriate team will be awarded 1 point.`,
+**7.5.3.** Any Blitz by the Defense during a conversion will count as one of its five blitzes for the Half.
+
+**7.5.4.** A safety on a conversion – the appropriate team will be awarded 1 point.`,
   },
   {
     id: "pre-game",
@@ -354,7 +358,7 @@ g) A Team or Referee Time Out
   },
   {
     id: "game-play",
-    title: "Game Play and Formations",
+    title: "Game Play & Formations",
     content: `**11.1 Formations**
 
 **11.1.1. Number of players:** Each team will consist of a roster of 30 active Players, with 11 Players on the field during any play.
@@ -501,7 +505,7 @@ g) A Team or Referee Time Out
   },
   {
     id: "referees",
-    title: "Referees and Staff",
+    title: "Referees & Staff",
     content: `**16.1.** All Officials will be trained and credentialed by the League.
 
 **16.2.** Up to six Officials will work each game: one Referee, two Linesmen and two Field Judges, and a Timekeeper.
@@ -578,9 +582,9 @@ g) A Team or Referee Time Out
 export default function RulesModule() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isTOCOpen, setIsTOCOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
   const tocContainerRef = useRef<HTMLDivElement>(null);
   const tocButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   const goToNextPage = () => {
     if (currentPage < ruleSections.length - 1) {
@@ -594,37 +598,38 @@ export default function RulesModule() {
     }
   };
 
-  // Scroll TOC to show active section with breathing room
+  // Scroll to top when page changes
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [currentPage]);
+
+  // Auto-scroll TOC to show active section only when necessary
   useEffect(() => {
     const activeButton = tocButtonRefs.current[currentPage];
     const container = tocContainerRef.current;
 
     if (activeButton && container) {
-      const buttonRect = activeButton.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
+      // Get the position of the button relative to the scrollable container
+      const containerScrollTop = container.scrollTop;
+      const containerHeight = container.clientHeight;
+      const buttonOffsetTop = activeButton.offsetTop;
+      const buttonHeight = activeButton.offsetHeight;
 
-      // Check if button is not fully visible with 40px buffer below
-      const bottomBuffer = 40;
-      const isButtonBelowView =
-        buttonRect.bottom + bottomBuffer > containerRect.bottom;
-      const isButtonAboveView = buttonRect.top < containerRect.top;
+      const buffer = 40;
 
-      if (isButtonBelowView || isButtonAboveView) {
-        activeButton.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
+      // Calculate if button is outside the visible scroll area
+      const isAboveView = buttonOffsetTop < containerScrollTop;
+      const isBelowView =
+        buttonOffsetTop + buttonHeight >
+        containerScrollTop + containerHeight - buffer;
+
+      // Only scroll if the button is actually outside the visible area
+      if (isAboveView || isBelowView) {
+        // Use 'nearest' to scroll minimum amount needed
+        activeButton.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
-    }
-  }, [currentPage]);
-
-  // Scroll content area to top when page changes
-  useEffect(() => {
-    if (contentRef.current) {
-      contentRef.current.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
     }
   }, [currentPage]);
 
@@ -656,12 +661,12 @@ export default function RulesModule() {
         // Check if it's a main numbered header (like 1.1. FIELD)
         const isNumberedHeader = parts[1] && /^\d+\.\d+\./.test(parts[1]);
 
-        let className = "mb-6 mt-0 md:mt-10 md:ml-6"; // Default for unnumbered bold sections
+        let className = "mb-6 mt-0"; // Default for unnumbered bold sections
 
         if (isThreeLevelSubsection) {
-          className = "mb-4 mt-0 md:mt-4 md:ml-12"; // Subsections indented more
+          className = "mb-4 mt-0"; // Subsections no indent
         } else if (isTwoLevelHeader || isNumberedHeader) {
-          className = "mb-6 mt-0 md:mt-6 first:mt-0"; // Two-level headers not indented
+          className = "mb-6 mt-0 first:mt-0"; // Two-level headers not indented
         }
 
         return (
@@ -677,11 +682,18 @@ export default function RulesModule() {
         );
       }
 
+      // Check if it starts with a letter (like a), b), c))
+      const startsWithLetter = paragraph.match(/^[a-z]\)/);
       // Check if it's an unnumbered paragraph (doesn't start with a number)
       const isUnnumbered = !paragraph.match(/^(\d+\.\d+\.|\d+\.\d+\.\d+)/);
 
       return (
-        <p key={idx} className={isUnnumbered ? "mb-4 ml-6" : "mb-4"}>
+        <p
+          key={idx}
+          className={
+            startsWithLetter ? "mb-4 ml-6" : isUnnumbered ? "mb-4 ml-6" : "mb-4"
+          }
+        >
           {paragraph}
         </p>
       );
@@ -689,27 +701,27 @@ export default function RulesModule() {
   };
 
   return (
-    <div className="flex flex-col min-[800px]:flex-row h-full w-full bg-white min-[600px]:rounded-lg shadow-2xl overflow-hidden relative outline-none min-[600px]:mt-10">
-      {/* Backdrop for tablet view when TOC is open */}
+    <div className="flex flex-col h-full w-full bg-white min-[500px]:rounded-lg shadow-2xl overflow-hidden relative outline-none min-[500px]:mt-5 min-[1000px]:flex-row">
+      {/* Backdrop when TOC is open - Mobile only (<500px) */}
       {isTOCOpen && (
         <div
-          className="absolute inset-0 bg-black/50 z-10 hidden min-[600px]:block min-[800px]:hidden"
+          className="absolute inset-0 bg-black/50 z-10 max-[499px]:block min-[500px]:hidden"
           onClick={() => setIsTOCOpen(false)}
         />
       )}
 
-      {/* Table of Contents - Hidden below 600px, Overlay from 600-800px, Side panel on Desktop */}
+      {/* Mobile TOC (<500px): Absolute positioned dropdown */}
       <div
-        className={`absolute min-[800px]:relative w-full min-[800px]:w-[400px] min-[800px]:h-full bg-gray-50 min-[800px]:border-r border-gray-200 transition-all duration-300 z-20 flex-col ${
-          isTOCOpen ? "flex shadow-xl" : "hidden"
-        } min-[600px]:flex min-[600px]:max-h-full min-[800px]:shadow-none`}
+        className={`absolute w-full bg-gray-50 border-gray-200 transition-all duration-300 z-20 flex flex-col max-[499px]:flex min-[500px]:hidden ${
+          isTOCOpen ? "shadow-xl" : "max-h-14 overflow-hidden"
+        }`}
         style={{
           maxHeight: isTOCOpen ? "calc(100% - 4rem)" : undefined,
         }}
       >
         <button
           onClick={() => setIsTOCOpen(!isTOCOpen)}
-          className="w-full flex justify-between items-center p-4 hidden min-[600px]:flex min-[800px]:hidden bg-gray-50 hover:bg-gray-100 transition-colors outline-none focus:outline-none"
+          className="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition-colors outline-none focus:outline-none"
         >
           <h2 className="text-lg font-medium text-gray-600 truncate pr-2">
             {ruleSections[currentPage].isCover
@@ -732,33 +744,31 @@ export default function RulesModule() {
             />
           </svg>
         </button>
+
         <div
           className={`flex flex-col flex-1 overflow-hidden ${
-            isTOCOpen ? "" : "hidden min-[600px]:flex"
+            isTOCOpen ? "" : "hidden"
           }`}
         >
-          <div className="hidden min-[600px]:block bg-gray-50 px-8 lg:px-12 pt-8 lg:pt-12 pb-2 md:pb-3 flex-shrink-0">
-            <h2 className="text-2xl md:text-3xl text-gray-600">
-              Table of Contents
-            </h2>
-          </div>
-          <div
-            ref={tocContainerRef}
-            className="p-4 md:px-8 md:pb-8 lg:px-12 lg:pb-12 md:pt-2 overflow-y-auto flex-1"
-          >
-            <nav className="space-y-1 md:space-y-1">
+          <nav className="flex-1 overflow-hidden px-2 pb-3">
+            <div
+              className="overflow-y-auto h-full space-y-1 scrollbar-hide"
+              style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+              }}
+            >
               {ruleSections.map((section, index) => (
                 <button
                   key={section.id}
-                  ref={(el) => (tocButtonRefs.current[index] = el)}
                   onClick={() => {
                     setCurrentPage(index);
                     setIsTOCOpen(false);
                   }}
-                  className={`w-full text-left px-3 py-3 rounded-lg transition-colors text-sm md:text-lg outline-none focus:outline-none ${
+                  className={`w-full text-left py-3 rounded-lg transition-colors text-xs outline-none focus:outline-none ${
                     currentPage === index
-                      ? "bg-flagball-red text-white font-medium"
-                      : "text-gray-700 hover:bg-gray-200"
+                      ? "bg-flagball-red text-white font-medium pl-4 pr-3"
+                      : "text-gray-700 pl-4 pr-3"
                   }`}
                 >
                   {section.isCover ? (
@@ -770,61 +780,189 @@ export default function RulesModule() {
                   )}
                 </button>
               ))}
-            </nav>
-          </div>
+            </div>
+          </nav>
         </div>
       </div>
 
-      {/* Content - Right Side */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Content Area */}
-        <div
-          ref={contentRef}
-          className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 pt-20 md:pt-4 lg:pt-12"
+      {/* Desktop/Tablet TOC (500-999px): Top dropdown, extends to bottom nav bar */}
+      <div
+        className={`w-full bg-gray-50 border-b border-gray-200 flex flex-col max-[499px]:hidden min-[500px]:max-[999px]:flex min-[1000px]:hidden flex-shrink-0 ${
+          isTOCOpen ? "max-h-[calc(100%-56px)]" : ""
+        }`}
+      >
+        <button
+          onClick={() => setIsTOCOpen(!isTOCOpen)}
+          className="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition-colors outline-none focus:outline-none flex-shrink-0"
         >
-          {ruleSections[currentPage].isCover ? (
-            <div className="flex flex-col items-center justify-center h-full space-y-6 md:space-y-8">
+          <h2 className="text-lg font-medium text-gray-600 truncate pr-2">
+            {ruleSections[currentPage].isCover
+              ? "Table of Contents"
+              : `${currentPage}. ${ruleSections[currentPage].title}`}
+          </h2>
+          <svg
+            className={`w-5 h-5 text-gray-600 transform transition-transform flex-shrink-0 ${
+              isTOCOpen ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        {isTOCOpen && (
+          <div
+            className="overflow-hidden"
+            style={{ maxHeight: "calc(100% - 56px)" }}
+          >
+            <nav className="h-full overflow-hidden px-4 pb-8">
+              <div
+                className="overflow-y-auto h-full space-y-1 scrollbar-hide"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                }}
+              >
+                {ruleSections.map((section, index) => (
+                  <button
+                    key={section.id}
+                    onClick={() => {
+                      setCurrentPage(index);
+                      setIsTOCOpen(false);
+                    }}
+                    className={`w-full text-left py-3 rounded-lg transition-colors text-base outline-none focus:outline-none ${
+                      currentPage === index
+                        ? "bg-flagball-red text-white font-medium pl-4 pr-3"
+                        : "text-gray-700 pl-4 pr-3"
+                    }`}
+                  >
+                    {section.isCover ? (
+                      "Official Rules"
+                    ) : (
+                      <>
+                        {index}. {section.title}
+                      </>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </nav>
+          </div>
+        )}
+      </div>
+
+      {/* Large Desktop TOC (>=1000px): Left sidebar */}
+      <div className="max-[999px]:hidden min-[1000px]:flex w-[300px] h-full bg-gray-50 border-r border-gray-200 flex-col">
+        <div className="bg-gray-50 px-4 pt-8 pb-3 flex-shrink-0">
+          <h2 className="text-xl text-gray-600">Table of Contents</h2>
+        </div>
+
+        <nav className="flex-1 overflow-hidden px-4 pb-8">
+          <div
+            ref={tocContainerRef}
+            className="overflow-y-auto h-full space-y-1 scrollbar-hide"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
+            {ruleSections.map((section, index) => (
+              <button
+                key={section.id}
+                ref={(el) => {
+                  tocButtonRefs.current[index] = el;
+                }}
+                onClick={() => {
+                  setCurrentPage(index);
+                }}
+                className={`w-full text-left py-3 rounded-lg transition-colors text-base outline-none focus:outline-none ${
+                  currentPage === index
+                    ? "bg-flagball-red text-white font-medium pl-4 pr-3"
+                    : "text-gray-700 pl-4 pr-3"
+                }`}
+              >
+                {section.isCover ? (
+                  "Official Rules"
+                ) : (
+                  <>
+                    {index}. {section.title}
+                  </>
+                )}
+              </button>
+            ))}
+          </div>
+        </nav>
+      </div>
+
+      {/* Content - Right Side */}
+      <div className="flex-1 flex flex-col overflow-hidden relative">
+        {/* Content Area */}
+        {ruleSections[currentPage].isCover ? (
+          /* Cover Page */
+          <div
+            ref={contentRef}
+            className="flex-1 overflow-y-auto px-4 pb-16 min-[500px]:px-8 min-[500px]:pb-20 pt-12 min-[500px]:pt-6 min-[1000px]:pt-4"
+          >
+            <div className="flex flex-col items-center justify-center h-full space-y-6 min-[500px]:space-y-8">
               <div className="relative">
                 <Image
                   src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_black_v2.png"
                   alt="FLAGBALL"
                   width={300}
                   height={75}
-                  className="w-auto h-12 md:h-16"
+                  className="w-auto h-12 min-[500px]:h-16"
                 />
-                <span className="absolute -top-1 md:-top-2 -right-6 md:-right-8 text-xs md:text-sm font-bold text-gray-900">
+                <span className="absolute -top-1 min-[500px]:-top-2 -right-6 min-[500px]:-right-8 text-xs min-[500px]:text-sm font-bold text-gray-900">
                   TM
                 </span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-bold text-gray-900">
+              <h1 className="text-2xl min-[500px]:text-4xl font-bold text-gray-900">
                 Official Rules
               </h1>
-              <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
+              <h2 className="text-2xl min-[500px]:text-4xl font-bold text-gray-900">
                 2025
               </h2>
             </div>
-          ) : (
-            <div>
-              <h1 className="hidden md:block text-2xl md:text-3xl font-bold pb-2 md:pb-3 mb-6 md:mb-8 text-flagball-red border-b-2 border-gray-300">
+          </div>
+        ) : (
+          /* Rules Content Pages */
+          <>
+            {/* Section Header - Only show on Large Desktop (>=1000px) */}
+            <div className="hidden min-[1000px]:block bg-white px-8 pt-8 pb-3 flex-shrink-0">
+              <h1 className="text-xl font-bold pb-3 text-flagball-red border-b-2 border-gray-300">
                 {ruleSections[currentPage].title}
               </h1>
-              <div className="text-gray-700 leading-relaxed text-base md:text-xl">
+            </div>
+
+            {/* Rules Content */}
+            <div
+              ref={contentRef}
+              className="flex-1 overflow-y-auto px-4 pb-16 min-[500px]:px-8 min-[500px]:pb-20 pt-12 min-[500px]:pt-6 min-[1000px]:pt-4"
+            >
+              <div className="text-gray-700 leading-relaxed text-sm min-[500px]:text-lg">
                 {formatContent(ruleSections[currentPage].content)}
               </div>
             </div>
-          )}
-        </div>
+          </>
+        )}
 
         {/* Navigation Arrows */}
-        <div className="flex justify-between items-center p-3 md:p-6 border-t border-gray-200 bg-gray-50">
+        <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center p-2 min-[500px]:p-3 border-t border-gray-200 bg-gray-50">
           <button
             onClick={goToPreviousPage}
             disabled={currentPage === 0}
-            className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-flagball-red text-white hover:opacity-80 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+            className="flex items-center justify-center w-9 h-9 min-[500px]:w-10 min-[500px]:h-10 rounded-full bg-flagball-red text-white hover:opacity-80 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
             aria-label="Previous page"
           >
             <svg
-              className="w-5 h-5 md:w-6 md:h-6"
+              className="w-4 h-4 min-[500px]:w-5 min-[500px]:h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -838,7 +976,7 @@ export default function RulesModule() {
             </svg>
           </button>
 
-          <span className="text-gray-600 font-medium text-sm md:text-base">
+          <span className="text-gray-600 font-medium text-sm min-[500px]:text-base">
             {currentPage === 0
               ? ""
               : `${currentPage} of ${ruleSections.length - 1}`}
@@ -847,11 +985,11 @@ export default function RulesModule() {
           <button
             onClick={goToNextPage}
             disabled={currentPage === ruleSections.length - 1}
-            className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-flagball-red text-white hover:opacity-80 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+            className="flex items-center justify-center w-9 h-9 min-[500px]:w-10 min-[500px]:h-10 rounded-full bg-flagball-red text-white hover:opacity-80 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
             aria-label="Next page"
           >
             <svg
-              className="w-5 h-5 md:w-6 md:h-6"
+              className="w-4 h-4 min-[500px]:w-5 min-[500px]:h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

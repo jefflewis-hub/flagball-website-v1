@@ -19,7 +19,7 @@ const faqData: FAQSection[] = [
       {
         question: "What is Flagball?",
         answer:
-          "Hybrid between Flag and Traditional Football. Flagball is 11-on-11 with full blocking but flag-pulling on ball carriers instead of tackling",
+          "Flagball is a hybrid between Traditional and Flag Football. It's 11-on-11 with full contact open-hand blocking, but flag-pulling instead of tackling",
       },
       {
         question: "How does blocking without pads work?",
@@ -27,8 +27,8 @@ const faqData: FAQSection[] = [
           "Offensive players must engage a defender (1) from the front, (2) with open-hands (no shoulders), and (3) between the defender's waist and shoulders.",
       },
       {
-        question: "What is the main difference from tackle football?",
-        answer: "Flag pulling instead of tackling",
+        question: "What are the main differences from Traditional Football?",
+        answer: "Players don't wear pads. Flag pulling instead of tackling",
       },
       {
         question: "Is scoring the same as traditional football?",
@@ -103,57 +103,7 @@ const faqData: FAQSection[] = [
 export default function FAQAccordion() {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
   const [openSections, setOpenSections] = useState<Set<number>>(new Set());
-  const [activeSection, setActiveSection] = useState<number>(0); // Default to THE GAME
-
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
-    const handleScroll = () => {
-      // Throttle scroll events for performance
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        const sections = faqData
-          .map((section, index) => {
-            const element = document.getElementById(
-              section.title.toLowerCase().replace(/\s+/g, "-")
-            );
-            if (element) {
-              const rect = element.getBoundingClientRect();
-              return {
-                index,
-                top: rect.top,
-                bottom: rect.bottom,
-              };
-            }
-            return null;
-          })
-          .filter(Boolean);
-
-        // Find which section is currently in view (top of viewport)
-        let newActiveSection = 0;
-
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = sections[i];
-          if (section && section.top <= 250) {
-            newActiveSection = section.index;
-            break;
-          }
-        }
-
-        setActiveSection(newActiveSection);
-      }, 50);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    document.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
-
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const [activeSection, setActiveSection] = useState(0);
 
   const toggleItem = (sectionIndex: number, itemIndex: number) => {
     const key = `${sectionIndex}-${itemIndex}`;
@@ -188,52 +138,84 @@ export default function FAQAccordion() {
     return openSections.has(sectionIndex);
   };
 
+  const scrollToSection = (index: number) => {
+    const sectionId = faqData[index].title.toLowerCase().replace(/\s+/g, "-");
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(index);
+    }
+  };
+
+  // Track scroll position to update active section
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = faqData.map((section) =>
+        document.getElementById(
+          section.title.toLowerCase().replace(/\s+/g, "-")
+        )
+      );
+
+      const viewportMiddle = window.innerHeight / 2;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= viewportMiddle) {
+            setActiveSection(i);
+            break;
+          }
+        }
+      }
+    };
+
+    let timeoutId: NodeJS.Timeout;
+    const throttledScroll = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleScroll, 100);
+    };
+
+    window.addEventListener("scroll", throttledScroll);
+    handleScroll(); // Initial check
+
+    return () => {
+      window.removeEventListener("scroll", throttledScroll);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
     <div className="relative">
       {/* FAQ Title - Mobile Only */}
-      <h1 className="md:hidden text-4xl text-gray-700 text-center mb-8 mt-5">
-        FAQ
+      <h1 className="md:hidden text-3xl text-gray-700 text-center mb-8 mt-5">
+        FAQs
       </h1>
 
       {/* Table of Contents - Left Side on Desktop Only */}
-      <div className="hidden md:block md:fixed md:left-12 md:top-40 md:w-80">
-        <h3 className="text-4xl text-gray-700 mb-8">FAQs</h3>
+      <div className="hidden md:block md:fixed md:left-12 md:top-40 md:w-64">
+        <h3 className="text-3xl text-gray-700 mb-8">FAQs</h3>
         <nav className="flex flex-col">
           {faqData.map((section, index) => (
-            <div key={index}>
+            <div key={index} className="py-2">
               <button
-                onClick={() => {
-                  setActiveSection(index);
-                  const element = document.getElementById(
-                    section.title.toLowerCase().replace(/\s+/g, "-")
-                  );
-                  if (element) {
-                    element.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                  }
-                }}
-                className={`text-left text-xl py-4 px-5 block w-full rounded transition-colors h-16 flex items-center ${
-                  activeSection === index
-                    ? "bg-gray-200 text-gray-900"
-                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                onClick={() => scrollToSection(index)}
+                className={`w-full text-left py-3 px-4 text-base text-gray-700 transition-colors rounded-md ${
+                  activeSection === index ? "bg-gray-200" : ""
                 }`}
               >
                 {section.title}
               </button>
               {index < faqData.length - 1 && (
-                <div className="py-2">
-                  <div className="border-b border-gray-400"></div>
-                </div>
+                <div className="border-b border-gray-400 mt-2"></div>
               )}
             </div>
           ))}
         </nav>
       </div>
 
-      {/* Main Content - Centered between TOC and right edge */}
-      <div className="max-w-3xl md:max-w-[700px] mx-auto space-y-0 md:space-y-12">
+      {/* Main Content - Centered with TOC space accounted for in parent */}
+      <div className="max-w-3xl md:max-w-[600px] mx-auto space-y-0 md:space-y-12">
         {faqData.map((section, sectionIndex) => {
           const sectionIsOpen = isSectionOpen(sectionIndex);
           const isLastSection = sectionIndex === faqData.length - 1;
@@ -251,7 +233,7 @@ export default function FAQAccordion() {
                 onClick={() => toggleSection(sectionIndex)}
                 className="w-full text-left md:pointer-events-none border-t md:border-t-0 border-flagball-red md:border-b-4 py-5 md:py-0"
               >
-                <h2 className="text-xl md:text-3xl font-bold text-flagball-red px-6 md:px-0 md:pb-3 flex justify-between items-center md:block">
+                <h2 className="text-lg md:text-2xl font-bold text-flagball-red px-6 md:px-0 md:pb-3 flex justify-between items-center md:block">
                   <span>{section.title}</span>
                   <svg
                     className={`w-5 h-5 md:hidden text-flagball-red transform transition-transform duration-300 ease-in-out flex-shrink-0 ${
@@ -271,11 +253,14 @@ export default function FAQAccordion() {
                 </h2>
               </button>
 
+              {/* Spacer below border (desktop only) */}
+              <div className="hidden md:block md:h-6"></div>
+
               {/* FAQ Items - Collapsible on Mobile, Always Visible on Desktop */}
               <div
                 className={`md:block ${
                   sectionIsOpen ? "block" : "hidden"
-                } md:space-y-4 space-y-3 pb-6 md:pb-8 md:pt-10`}
+                } md:space-y-4 space-y-3`}
               >
                 {section.items.map((item, itemIndex) => {
                   const itemIsOpen = isOpen(sectionIndex, itemIndex);
@@ -294,7 +279,7 @@ export default function FAQAccordion() {
                           !itemIsOpen ? "hover:bg-gray-50" : ""
                         }`}
                       >
-                        <span className="text-lg md:text-xl font-medium text-gray-900 pr-4">
+                        <span className="text-base md:text-lg font-medium text-gray-900 pr-4">
                           {item.question}
                         </span>
                         <svg
@@ -320,7 +305,7 @@ export default function FAQAccordion() {
                             : "max-h-0 opacity-0"
                         } overflow-hidden`}
                       >
-                        <div className="px-6 md:px-8 pb-6 md:pb-8 pt-4 text-gray-700 leading-relaxed text-lg md:text-xl bg-white">
+                        <div className="px-6 md:px-8 pb-6 md:pb-8 pt-4 text-gray-700 leading-relaxed text-base md:text-lg bg-white">
                           {item.answer}
                         </div>
                       </div>

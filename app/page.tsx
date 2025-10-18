@@ -87,7 +87,7 @@ export default function Home() {
           muted
           playsInline
           preload="auto"
-          className="md:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
+          className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
           style={{ contentVisibility: "auto" }}
         >
           <source
@@ -103,7 +103,7 @@ export default function Home() {
           muted
           playsInline
           preload="auto"
-          className="hidden md:block absolute top-0 left-0 w-full h-full object-cover"
+          className="hidden min-[500px]:block absolute top-0 left-0 w-full h-full object-cover"
           style={{ contentVisibility: "auto" }}
         >
           <source
@@ -133,14 +133,14 @@ export default function Home() {
 
       {/* The Game Section */}
       <section className="bg-white py-16 md:py-24 px-6 md:px-4">
-        <div className="max-w-[850px] mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
+        <div className="max-w-[700px] mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-flagball-red mb-12 md:mb-16">
             The Game
           </h2>
           <div className="grid grid-cols-1 gap-0">
             {/* Card 1: 11-on-11 */}
-            <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-7 pt-6 md:pt-7 border-t border-b border-gray-300">
-              <div className="w-14 h-14 md:w-18 md:h-18 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-5 pt-6 md:pt-5 border-t border-b border-gray-300">
+              <div className="w-14 h-14 md:w-14 md:h-14 flex items-center justify-center flex-shrink-0">
                 <div
                   className="font-bold text-flagball-red leading-none text-center"
                   style={{ fontSize: "50px" }}
@@ -148,7 +148,7 @@ export default function Home() {
                   11
                 </div>
               </div>
-              <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
+              <div className="text-lg md:text-xl text-gray-900 text-left leading-tight">
                 <span className="font-bold text-flagball-red">on-11</span>.{" "}
                 <span className="md:hidden">
                   5 receivers, 5 lineman, and a QB
@@ -160,8 +160,8 @@ export default function Home() {
             </div>
 
             {/* Card 2: Flag */}
-            <div className="flex items-center gap-8 md:gap-10 py-6 md:py-7 border-b border-gray-300">
-              <div className="w-14 h-14 md:w-18 md:h-18 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 py-6 md:py-5 border-b border-gray-300">
+              <div className="w-14 h-14 md:w-14 md:h-14 flex items-center justify-center flex-shrink-0">
                 <svg
                   viewBox="0 0 34 104"
                   fill="none"
@@ -220,15 +220,15 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
+              <div className="text-lg md:text-xl text-gray-900 text-left leading-tight">
                 Pull <span className="font-bold text-flagball-red">flag</span>{" "}
                 to down the ball carrier
               </div>
             </div>
 
             {/* Card 3: Blocking */}
-            <div className="flex items-center gap-8 md:gap-10 pt-6 md:pt-7 pb-6 md:pb-7 border-b border-gray-300">
-              <div className="w-14 h-14 md:w-18 md:h-18 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 pt-6 md:pt-5 pb-6 md:pb-5 border-b border-gray-300">
+              <div className="w-14 h-14 md:w-14 md:h-14 flex items-center justify-center flex-shrink-0">
                 <svg
                   viewBox="0 0 92 92"
                   fill="none"
@@ -248,7 +248,7 @@ export default function Home() {
                   </defs>
                 </svg>
               </div>
-              <div className="text-xl md:text-2xl text-gray-900 text-left leading-tight">
+              <div className="text-lg md:text-xl text-gray-900 text-left leading-tight">
                 Open-hand{" "}
                 <span className="font-bold text-flagball-red">blocking</span>{" "}
                 between the waist and shoulders
@@ -260,40 +260,40 @@ export default function Home() {
 
       {/* The League Section */}
       <section className="bg-gray-50 py-16 md:py-24 px-6 md:px-4">
-        <div className="max-w-[850px] mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
+        <div className="max-w-[700px] mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-flagball-red mb-12 md:mb-16">
             The League
           </h2>
           <div className="grid grid-cols-1 gap-0">
             <div className="flex flex-col md:flex-row text-gray-900 pb-6 border-b border-gray-300">
-              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
                 Regular Season
               </span>
-              <span className="text-xl md:text-2xl">
+              <span className="text-lg md:text-xl">
                 6 teams each play 16 games
               </span>
             </div>
             <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
-              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
                 Playoffs
               </span>
-              <span className="text-xl md:text-2xl">
+              <span className="text-lg md:text-xl">
                 4 teams. Win or go home
               </span>
             </div>
             <div className="flex flex-col md:flex-row text-gray-900 py-6 border-b border-gray-300">
-              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
                 Schedule
               </span>
-              <span className="text-xl md:text-2xl">
-                Teams play two games per week for eight weeks
+              <span className="text-lg md:text-xl">
+                Teams play twice per week for eight weeks
               </span>
             </div>
             <div className="flex flex-col md:flex-row text-gray-900 pt-6">
-              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-2xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
+              <span className="text-gray-600 text-base uppercase md:text-gray-700 md:text-xl md:normal-case mb-2 md:mb-0 md:w-56 md:flex-shrink-0">
                 Roster
               </span>
-              <span className="text-xl md:text-2xl">30 players per team</span>
+              <span className="text-lg md:text-xl">30 players per team</span>
             </div>
           </div>
         </div>
@@ -301,8 +301,8 @@ export default function Home() {
 
       {/* Our Story Section */}
       <section className="bg-white py-16 md:py-24 px-6 md:px-4">
-        <div className="max-w-[850px] mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-flagball-red mb-12 md:mb-16">
+        <div className="max-w-[700px] mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-flagball-red mb-12 md:mb-16">
             Our Story
           </h2>
           <div ref={storyVideoRef}>

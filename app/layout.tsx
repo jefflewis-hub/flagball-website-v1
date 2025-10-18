@@ -66,23 +66,30 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* DNS prefetch and preconnect for faster CDN connection */}
-        <link rel="dns-prefetch" href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com" />
-        <link rel="preconnect" href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com" crossOrigin="anonymous" />
-        
+        <link
+          rel="dns-prefetch"
+          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com"
+          crossOrigin="anonymous"
+        />
+
         {/* Preload hero videos for instant loading */}
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
           type="video/mp4"
-          media="(max-width: 768px)"
+          media="(max-width: 499px)"
         />
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
           type="video/mp4"
-          media="(min-width: 769px)"
+          media="(min-width: 500px)"
         />
         <script
           type="application/ld+json"
