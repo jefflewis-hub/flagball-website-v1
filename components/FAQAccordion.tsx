@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface FAQItem {
   question: string;
@@ -40,7 +40,8 @@ const faqData: FAQSection[] = [
             Extra point field goal is 1 point.
             <br />
             <br />
-            Teams may opt for a 2 or 3 point conversion after a touchdown, instead of an extra point kick
+            Teams may opt for a 2 or 3 point conversion after a touchdown,
+            instead of an extra point kick
           </>
         ),
       },
@@ -58,10 +59,12 @@ const faqData: FAQSection[] = [
         question: "How does the season work?",
         answer: (
           <>
-            6 teams compete in a 16-game regular season, playing 2 games per week for 8 weeks.
+            6 teams compete in a 16-game regular season, playing 2 games per
+            week for 8 weeks.
             <br />
             <br />
-            The top 4 teams will qualify for the playoffs — the winners of the semi-finals game will square off in the championship
+            The top 4 teams will qualify for the playoffs — the winners of the
+            semi-finals game will square off in the championship
           </>
         ),
       },
@@ -83,10 +86,13 @@ const faqData: FAQSection[] = [
         question: "Who are the players?",
         answer: (
           <>
-            Flagball rosters bring together the best athletes in the world, from the highest level of a variety of sports.
+            Flagball rosters bring together the best athletes in the world, from
+            the highest level of a variety of sports.
             <br />
             <br />
-            Many FLAGBALL players have won World Championships in Flag Football and will compete for the Olympic Flag Football teams of their respective countries.
+            Many FLAGBALL players have won World Championships in Flag Football
+            and will compete for the Olympic Flag Football teams of their
+            respective countries.
           </>
         ),
       },
@@ -97,6 +103,57 @@ const faqData: FAQSection[] = [
 export default function FAQAccordion() {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
   const [openSections, setOpenSections] = useState<Set<number>>(new Set());
+  const [activeSection, setActiveSection] = useState<number>(0); // Default to THE GAME
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      // Throttle scroll events for performance
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const sections = faqData
+          .map((section, index) => {
+            const element = document.getElementById(
+              section.title.toLowerCase().replace(/\s+/g, "-")
+            );
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              return {
+                index,
+                top: rect.top,
+                bottom: rect.bottom,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean);
+
+        // Find which section is currently in view (top of viewport)
+        let newActiveSection = 0;
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          if (section && section.top <= 250) {
+            newActiveSection = section.index;
+            break;
+          }
+        }
+
+        setActiveSection(newActiveSection);
+      }, 50);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const toggleItem = (sectionIndex: number, itemIndex: number) => {
     const key = `${sectionIndex}-${itemIndex}`;
@@ -134,27 +191,48 @@ export default function FAQAccordion() {
   return (
     <div className="relative">
       {/* FAQ Title - Mobile Only */}
-      <h1 className="md:hidden text-4xl font-bold text-flagball-red text-center mb-8 mt-5">
+      <h1 className="md:hidden text-4xl text-gray-700 text-center mb-8 mt-5">
         FAQ
       </h1>
 
       {/* Table of Contents - Left Side on Desktop Only */}
-      <div className="hidden md:block md:fixed md:left-12 md:top-40 md:w-64">
-        <h3 className="text-4xl font-bold text-flagball-red mb-8">FAQS</h3>
-        <nav className="flex flex-col gap-6">
+      <div className="hidden md:block md:fixed md:left-12 md:top-40 md:w-80">
+        <h3 className="text-4xl text-gray-700 mb-8">FAQs</h3>
+        <nav className="flex flex-col">
           {faqData.map((section, index) => (
-            <a
-              key={index}
-              href={`#${section.title.toLowerCase().replace(/\s+/g, "-")}`}
-              className="block text-flagball-red hover:opacity-80 font-bold text-xl transition-opacity"
-            >
-              {section.title}
-            </a>
+            <div key={index}>
+              <button
+                onClick={() => {
+                  setActiveSection(index);
+                  const element = document.getElementById(
+                    section.title.toLowerCase().replace(/\s+/g, "-")
+                  );
+                  if (element) {
+                    element.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }
+                }}
+                className={`text-left text-xl py-4 px-5 block w-full rounded transition-colors h-16 flex items-center ${
+                  activeSection === index
+                    ? "bg-gray-200 text-gray-900"
+                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                {section.title}
+              </button>
+              {index < faqData.length - 1 && (
+                <div className="py-2">
+                  <div className="border-b border-gray-400"></div>
+                </div>
+              )}
+            </div>
           ))}
         </nav>
       </div>
 
-      {/* Main Content - Centered */}
+      {/* Main Content - Centered between TOC and right edge */}
       <div className="max-w-3xl md:max-w-[700px] mx-auto space-y-0 md:space-y-12">
         {faqData.map((section, sectionIndex) => {
           const sectionIsOpen = isSectionOpen(sectionIndex);

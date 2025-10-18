@@ -139,8 +139,8 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 gap-0">
             {/* Card 1: 11-on-11 */}
-            <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-10 pt-6 md:pt-10 border-t border-b border-gray-300">
-              <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 pb-6 md:pb-7 pt-6 md:pt-7 border-t border-b border-gray-300">
+              <div className="w-14 h-14 md:w-18 md:h-18 flex items-center justify-center flex-shrink-0">
                 <div
                   className="font-bold text-flagball-red leading-none text-center"
                   style={{ fontSize: "50px" }}
@@ -160,8 +160,8 @@ export default function Home() {
             </div>
 
             {/* Card 2: Flag */}
-            <div className="flex items-center gap-8 md:gap-10 py-6 md:py-10 border-b border-gray-300">
-              <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 py-6 md:py-7 border-b border-gray-300">
+              <div className="w-14 h-14 md:w-18 md:h-18 flex items-center justify-center flex-shrink-0">
                 <svg
                   viewBox="0 0 34 104"
                   fill="none"
@@ -227,8 +227,8 @@ export default function Home() {
             </div>
 
             {/* Card 3: Blocking */}
-            <div className="flex items-center gap-8 md:gap-10 pt-6 md:pt-10 pb-6 md:pb-10 border-b border-gray-300">
-              <div className="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-8 md:gap-10 pt-6 md:pt-7 pb-6 md:pb-7 border-b border-gray-300">
+              <div className="w-14 h-14 md:w-18 md:h-18 flex items-center justify-center flex-shrink-0">
                 <svg
                   viewBox="0 0 92 92"
                   fill="none"

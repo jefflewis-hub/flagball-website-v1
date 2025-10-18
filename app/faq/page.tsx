@@ -27,7 +27,7 @@ export default function FAQPage() {
       />
 
       {/* Content with Off-White Background */}
-      <div className="relative z-10 pt-20 md:pt-40 pb-8 md:pb-16 px-4 min-h-[100dvh] md:min-h-screen bg-gray-50">
+      <div className="relative z-10 pt-20 md:pt-40 pb-8 md:pb-16 px-4 md:pl-[420px] min-h-[100dvh] md:min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <FAQAccordion />
         </div>

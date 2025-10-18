@@ -78,10 +78,10 @@ export default function PartnerPage() {
 
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center h-[100dvh] md:h-full px-4">
-        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 md:p-8 w-full lg:w-[500px] shadow-2xl mt-12 md:mt-0">
+        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 md:p-8 w-full lg:w-[35%] lg:min-w-[500px] lg:max-w-[750px] shadow-2xl mt-12 md:mt-0">
           <button
             onClick={() => window.history.back()}
-            className="mb-4 md:mb-6 text-gray-500 hover:opacity-80 flex items-center gap-2 transition-opacity"
+            className="mb-4 md:mb-6 text-gray-400 hover:opacity-80 flex items-center gap-2 transition-opacity"
           >
             <IoArrowBackCircle size={32} className="md:w-10 md:h-10" />
           </button>
@@ -163,13 +163,15 @@ export default function PartnerPage() {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-flagball-red text-white py-3 md:py-4 rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide text-base md:text-lg mt-4 md:mt-8"
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
+            <div className="border-t border-gray-400 pt-4 md:pt-6 mt-4 md:mt-8">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-flagball-red text-white py-3 md:py-4 rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide text-base md:text-lg"
+              >
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </button>
+            </div>
 
             {submitMessage && (
               <p className="text-center text-sm text-gray-600">
