@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 interface RuleSection {
@@ -290,8 +290,6 @@ g) A Team or Referee Time Out
 
 **6.3. End of Field:** Both Teams will defend the End Zone that was the target of the Game's initial Kick-off.
 
-**6.4. Blitz:** In Overtime, each team will receive 1 Blitz per Overtime period.
-
 **Conclusion:** The team leading at the conclusion of Overtime wins the game. If the score is tied at the end of the first Overtime period, an additional Overtime period will be played.`,
   },
   {
@@ -313,9 +311,7 @@ g) A Team or Referee Time Out
 
 **7.5.2.** If the Defense intercepts the ball and returns it to the Opposing End Zone, they will be awarded 2 points.
 
-**7.5.3.** Any Blitz by the Defense during a conversion will count as one of its five blitzes for the Half.
-
-**7.5.4.** A safety on a conversion – the appropriate team will be awarded 1 point.`,
+**7.5.3.** A safety on a conversion – the appropriate team will be awarded 1 point.`,
   },
   {
     id: "pre-game",
@@ -582,6 +578,9 @@ g) A Team or Referee Time Out
 export default function RulesModule() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isTOCOpen, setIsTOCOpen] = useState(false);
+  const tocContainerRef = useRef<HTMLDivElement>(null);
+  const tocButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const goToNextPage = () => {
     if (currentPage < ruleSections.length - 1) {
@@ -594,6 +593,40 @@ export default function RulesModule() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  // Scroll TOC to show active section with breathing room
+  useEffect(() => {
+    const activeButton = tocButtonRefs.current[currentPage];
+    const container = tocContainerRef.current;
+
+    if (activeButton && container) {
+      const buttonRect = activeButton.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      // Check if button is not fully visible with 40px buffer below
+      const bottomBuffer = 40;
+      const isButtonBelowView =
+        buttonRect.bottom + bottomBuffer > containerRect.bottom;
+      const isButtonAboveView = buttonRect.top < containerRect.top;
+
+      if (isButtonBelowView || isButtonAboveView) {
+        activeButton.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }
+  }, [currentPage]);
+
+  // Scroll content area to top when page changes
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [currentPage]);
 
   // Add keyboard navigation
   useEffect(() => {
@@ -656,27 +689,27 @@ export default function RulesModule() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-white md:rounded-lg shadow-2xl overflow-hidden relative outline-none">
-      {/* Backdrop for mobile when TOC is open */}
+    <div className="flex flex-col min-[800px]:flex-row h-full w-full bg-white min-[600px]:rounded-lg shadow-2xl overflow-hidden relative outline-none min-[600px]:mt-10">
+      {/* Backdrop for tablet view when TOC is open */}
       {isTOCOpen && (
         <div
-          className="absolute inset-0 bg-black/50 z-10 md:hidden"
+          className="absolute inset-0 bg-black/50 z-10 hidden min-[600px]:block min-[800px]:hidden"
           onClick={() => setIsTOCOpen(false)}
         />
       )}
 
-      {/* Table of Contents - Left Side on Desktop, Overlay on Mobile */}
+      {/* Table of Contents - Hidden below 600px, Overlay from 600-800px, Side panel on Desktop */}
       <div
-        className={`absolute md:relative w-full md:w-[400px] md:h-full bg-gray-50 md:border-r border-gray-200 transition-all duration-300 z-20 flex flex-col ${
-          isTOCOpen ? "shadow-xl" : "max-h-14 overflow-hidden"
-        } md:max-h-full md:shadow-none`}
+        className={`absolute min-[800px]:relative w-full min-[800px]:w-[400px] min-[800px]:h-full bg-gray-50 min-[800px]:border-r border-gray-200 transition-all duration-300 z-20 flex-col ${
+          isTOCOpen ? "flex shadow-xl" : "hidden"
+        } min-[600px]:flex min-[600px]:max-h-full min-[800px]:shadow-none`}
         style={{
           maxHeight: isTOCOpen ? "calc(100% - 4rem)" : undefined,
         }}
       >
         <button
           onClick={() => setIsTOCOpen(!isTOCOpen)}
-          className="w-full flex justify-between items-center p-4 md:hidden bg-gray-50 hover:bg-gray-100 transition-colors outline-none focus:outline-none"
+          className="w-full flex justify-between items-center p-4 hidden min-[600px]:flex min-[800px]:hidden bg-gray-50 hover:bg-gray-100 transition-colors outline-none focus:outline-none"
         >
           <h2 className="text-lg font-medium text-gray-600 truncate pr-2">
             {ruleSections[currentPage].isCover
@@ -700,44 +733,55 @@ export default function RulesModule() {
           </svg>
         </button>
         <div
-          className={`p-4 md:p-8 lg:p-12 overflow-y-auto flex-1 ${
-            isTOCOpen ? "" : "hidden md:block"
+          className={`flex flex-col flex-1 overflow-hidden ${
+            isTOCOpen ? "" : "hidden min-[600px]:flex"
           }`}
         >
-          <h2 className="hidden md:block text-2xl md:text-3xl pb-2 md:pb-3 mb-2 md:mb-4 text-gray-600">
-            Table of Contents
-          </h2>
-          <nav className="space-y-1 md:space-y-1">
-            {ruleSections.map((section, index) => (
-              <button
-                key={section.id}
-                onClick={() => {
-                  setCurrentPage(index);
-                  setIsTOCOpen(false);
-                }}
-                className={`w-full text-left px-3 py-3 rounded-lg transition-colors text-sm md:text-lg outline-none focus:outline-none ${
-                  currentPage === index
-                    ? "bg-flagball-red text-white font-medium"
-                    : "text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {section.isCover ? (
-                  "Official Rules"
-                ) : (
-                  <>
-                    {index}. {section.title}
-                  </>
-                )}
-              </button>
-            ))}
-          </nav>
+          <div className="hidden min-[600px]:block bg-gray-50 px-8 lg:px-12 pt-8 lg:pt-12 pb-2 md:pb-3 flex-shrink-0">
+            <h2 className="text-2xl md:text-3xl text-gray-600">
+              Table of Contents
+            </h2>
+          </div>
+          <div
+            ref={tocContainerRef}
+            className="p-4 md:px-8 md:pb-8 lg:px-12 lg:pb-12 md:pt-2 overflow-y-auto flex-1"
+          >
+            <nav className="space-y-1 md:space-y-1">
+              {ruleSections.map((section, index) => (
+                <button
+                  key={section.id}
+                  ref={(el) => (tocButtonRefs.current[index] = el)}
+                  onClick={() => {
+                    setCurrentPage(index);
+                    setIsTOCOpen(false);
+                  }}
+                  className={`w-full text-left px-3 py-3 rounded-lg transition-colors text-sm md:text-lg outline-none focus:outline-none ${
+                    currentPage === index
+                      ? "bg-flagball-red text-white font-medium"
+                      : "text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {section.isCover ? (
+                    "Official Rules"
+                  ) : (
+                    <>
+                      {index}. {section.title}
+                    </>
+                  )}
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
       </div>
 
       {/* Content - Right Side */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 pt-20 md:pt-4 lg:pt-12">
+        <div
+          ref={contentRef}
+          className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 pt-20 md:pt-4 lg:pt-12"
+        >
           {ruleSections[currentPage].isCover ? (
             <div className="flex flex-col items-center justify-center h-full space-y-6 md:space-y-8">
               <div className="relative">
