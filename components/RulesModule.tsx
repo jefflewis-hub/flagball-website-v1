@@ -746,13 +746,17 @@ export default function RulesModule() {
         </button>
 
         <div
-          className={`flex flex-col flex-1 overflow-hidden ${
+          className={`flex flex-col flex-1 ${
             isTOCOpen ? "" : "hidden"
           }`}
+          style={{
+            overflowY: isTOCOpen ? "auto" : "hidden",
+            WebkitOverflowScrolling: "touch",
+          }}
         >
-          <nav className="flex-1 overflow-hidden px-2 pb-3">
+          <nav className="flex-1 px-2 pb-3">
             <div
-              className="overflow-y-auto h-full space-y-1 scrollbar-hide"
+              className="space-y-1 scrollbar-hide"
               style={{
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
