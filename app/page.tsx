@@ -8,7 +8,6 @@ import { FaStopCircle } from "react-icons/fa";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const storyVideoRef = useRef<HTMLDivElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
@@ -18,31 +17,48 @@ export default function Home() {
   // Force mobile video to play immediately
   useEffect(() => {
     if (mobileVideoRef.current && window.innerWidth < 500) {
-      console.log('Attempting to force play mobile video');
+      console.log("Attempting to force play mobile video");
       const video = mobileVideoRef.current;
-      
+
       // Ensure video is ready to play
       if (video.readyState >= 2) {
         // HAVE_CURRENT_DATA or better - can play
-        console.log('Video ready, playing immediately');
-        video.play().catch(e => console.log('Play failed:', e));
+        console.log("Video ready, playing immediately");
+        video.play().catch((e) => console.log("Play failed:", e));
       } else {
         // Not ready yet, set up listener
-        console.log('Video not ready, waiting for canplay event');
+        console.log("Video not ready, waiting for canplay event");
         const handleCanPlay = () => {
-          console.log('Video can play now, starting playback');
-          video.play().catch(e => console.log('Play failed:', e));
+          console.log("Video can play now, starting playback");
+          video.play().catch((e) => console.log("Play failed:", e));
         };
-        video.addEventListener('canplay', handleCanPlay, { once: true });
+        video.addEventListener("canplay", handleCanPlay, { once: true });
       }
     }
   }, []);
 
   const handlePlayClick = () => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setIsPlaying(true);
-      setShowControls(false);
+    // Load video if not already loaded
+    if (!shouldLoadVideo) {
+      setShouldLoadVideo(true);
+      // Wait for video to load before playing
+      if (videoRef.current) {
+        const handleCanPlay = () => {
+          videoRef.current?.play();
+          setIsPlaying(true);
+          setShowControls(false);
+        };
+        videoRef.current.addEventListener("canplay", handleCanPlay, {
+          once: true,
+        });
+      }
+    } else {
+      // Video already loaded, just play
+      if (videoRef.current) {
+        videoRef.current.play();
+        setIsPlaying(true);
+        setShowControls(false);
+      }
     }
   };
 
@@ -70,44 +86,8 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lazy load trailer video with Intersection Observer
-  // Delay setup by 2 seconds to ensure hero video gets all bandwidth first
-  useEffect(() => {
-    const setupObserver = () => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !shouldLoadVideo) {
-              setShouldLoadVideo(true);
-            }
-          });
-        },
-        {
-          rootMargin: "50px", // Start loading only 50px before video is visible
-          threshold: 0.1,
-        }
-      );
-
-      const currentRef = storyVideoRef.current;
-      if (currentRef) {
-        observer.observe(currentRef);
-      }
-
-      return () => {
-        if (currentRef) {
-          observer.unobserve(currentRef);
-        }
-      };
-    };
-
-    // Wait 2 seconds before even setting up the observer
-    // This gives hero video priority during critical initial load
-    const timer = setTimeout(setupObserver, 2000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [shouldLoadVideo]);
+  // Don't load video until user explicitly clicks play
+  // This saves bandwidth and speeds up initial page load
 
   return (
     <main className="relative w-[100vw] md:w-screen overflow-x-hidden">
@@ -127,21 +107,21 @@ export default function Home() {
           disableRemotePlayback
           className="min-[500px]:hidden absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
           style={{
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
           }}
           src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
           onLoadedData={(e) => {
-            console.log('Mobile video: loadedData event fired');
+            console.log("Mobile video: loadedData event fired");
             e.currentTarget.play();
           }}
           onCanPlay={(e) => {
-            console.log('Mobile video: canPlay event fired');
+            console.log("Mobile video: canPlay event fired");
             e.currentTarget.play();
           }}
-          onPlay={() => console.log('Mobile video: playing started')}
-          onLoadStart={() => console.log('Mobile video: load started')}
+          onPlay={() => console.log("Mobile video: playing started")}
+          onLoadStart={() => console.log("Mobile video: load started")}
         />
 
         {/* Video Background - Desktop */}
@@ -353,27 +333,39 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold text-flagball-red mb-12 md:mb-16">
             Our Story
           </h2>
-          <div ref={storyVideoRef}>
+          <div>
             <div
-              className="relative w-full cursor-pointer bg-white rounded-lg"
+              className="relative w-full cursor-pointer bg-gray-100 rounded-lg"
               style={{ paddingBottom: "56.25%" }}
               onClick={handleVideoClick}
             >
-              <video
-                ref={videoRef}
-                preload="none"
-                playsInline
-                poster="/poster.jpg"
-                className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-white object-cover"
-              >
-                {shouldLoadVideo && (
+              {/* Lazy-loaded poster image - only loads when in viewport */}
+              {!shouldLoadVideo && (
+                <Image
+                  src="/poster.jpg"
+                  alt="Flagball Story Video"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 700px"
+                  className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl object-cover"
+                  loading="lazy"
+                />
+              )}
+
+              {/* Video - only loads when user clicks play */}
+              {shouldLoadVideo && (
+                <video
+                  ref={videoRef}
+                  preload="auto"
+                  playsInline
+                  className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-white object-cover"
+                >
                   <source
                     src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
                     type="video/mp4"
                   />
-                )}
-                Your browser does not support the video tag.
-              </video>
+                  Your browser does not support the video tag.
+                </video>
+              )}
 
               {/* Custom Play Button - Always visible when not playing */}
               {!isPlaying && (
