@@ -107,7 +107,13 @@ export default function Home() {
           playsInline
           preload="auto"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
-          style={{ contentVisibility: "auto" }}
+          style={{ 
+            contentVisibility: "auto",
+            width: "100dvw",
+            height: "100dvh",
+            minWidth: "100dvw",
+            minHeight: "100dvh"
+          }}
           src={mobileVideoSrc}
         />
 
