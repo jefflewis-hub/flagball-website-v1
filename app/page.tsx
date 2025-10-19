@@ -14,40 +14,28 @@ export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
-  // Use preloaded video for instant playback
+  // Force video to load and play immediately
   useEffect(() => {
-    const isMobile = window.innerWidth < 500;
+    // Mobile video
+    const mobileVideo = document.querySelector('video.min-\\[500px\\]\\:hidden') as HTMLVideoElement;
+    if (mobileVideo && window.innerWidth < 500) {
+      // Force load immediately
+      mobileVideo.load();
+      // Try to play as soon as possible
+      const attemptPlay = () => {
+        mobileVideo.play().catch(() => {
+          // Retry if failed
+          setTimeout(attemptPlay, 100);
+        });
+      };
+      attemptPlay();
+    }
     
-    if (isMobile) {
-      const mobileVideo = document.querySelector('video.min-\\[500px\\]\\:hidden') as HTMLVideoElement;
-      const preloadedVideo = (window as any).__preloadedVideo__;
-      
-      if (mobileVideo && preloadedVideo) {
-        // Clone preloaded video state to visible video element
-        mobileVideo.src = preloadedVideo.src;
-        if ((window as any).__videoReady__) {
-          // Video already loaded, copy current time and play
-          mobileVideo.currentTime = preloadedVideo.currentTime;
-          mobileVideo.play().catch(() => {});
-        } else {
-          // Still loading, let it continue
-          mobileVideo.load();
-          mobileVideo.play().catch(() => {});
-        }
-        // Clean up hidden preloaded video
-        setTimeout(() => {
-          if (preloadedVideo.parentNode) {
-            preloadedVideo.parentNode.removeChild(preloadedVideo);
-          }
-        }, 100);
-      }
-    } else {
-      // Desktop video
-      const desktopVideo = document.querySelector('video.hidden.min-\\[500px\\]\\:block') as HTMLVideoElement;
-      if (desktopVideo) {
-        desktopVideo.load();
-        desktopVideo.play().catch(() => {});
-      }
+    // Desktop video
+    const desktopVideo = document.querySelector('video.hidden.min-\\[500px\\]\\:block') as HTMLVideoElement;
+    if (desktopVideo && window.innerWidth >= 500) {
+      desktopVideo.load();
+      desktopVideo.play().catch(() => {});
     }
   }, []);
 
@@ -124,18 +112,15 @@ export default function Home() {
           muted
           playsInline
           preload="auto"
+          disablePictureInPicture
+          x-webkit-airplay="deny"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
           style={{ 
-            contentVisibility: "auto",
             willChange: "transform"
           }}
           poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%232E2E2E' width='1' height='1'/%3E%3C/svg%3E"
-        >
-          <source
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
-            type="video/mp4"
-          />
-        </video>
+          src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
+        />
 
         {/* Video Background - Desktop (Lower priority) */}
         <video
@@ -144,18 +129,15 @@ export default function Home() {
           muted
           playsInline
           preload="metadata"
+          disablePictureInPicture
+          x-webkit-airplay="deny"
           className="hidden min-[500px]:block absolute top-0 left-0 w-full h-full object-cover"
           style={{ 
-            contentVisibility: "auto",
             willChange: "transform"
           }}
           poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%232E2E2E' width='1' height='1'/%3E%3C/svg%3E"
-        >
-          <source
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
-            type="video/mp4"
-          />
-        </video>
+          src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
+        />
 
         {/* Dark Overlay */}
         <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />

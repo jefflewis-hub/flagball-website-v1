@@ -76,59 +76,12 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* CRITICAL: Preload mobile video with highest priority for immediate streaming */}
+        {/* Preload mobile video - simple and effective */}
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
           type="video/mp4"
-          crossOrigin="anonymous"
-          fetchPriority="high"
-        />
-        
-        {/* Service Worker registration for video caching */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Register service worker for aggressive video caching
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                    console.log('SW registered:', registration.scope);
-                  }).catch(function(error) {
-                    console.log('SW registration failed:', error);
-                  });
-                });
-              }
-            `,
-          }}
-        />
-        
-        {/* Immediate video element injection for instant load */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Create and inject video element ASAP for fastest load
-              (function() {
-                window.__videoReady__ = false;
-                var video = document.createElement('video');
-                video.setAttribute('preload', 'auto');
-                video.setAttribute('autoplay', '');
-                video.setAttribute('muted', '');
-                video.setAttribute('playsinline', '');
-                video.setAttribute('loop', '');
-                video.style.display = 'none';
-                video.src = 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4';
-                document.documentElement.appendChild(video);
-                video.load();
-                video.play().catch(function() {});
-                window.__preloadedVideo__ = video;
-                video.addEventListener('loadeddata', function() {
-                  window.__videoReady__ = true;
-                });
-              })();
-            `,
-          }}
         />
         
         <script
