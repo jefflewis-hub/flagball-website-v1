@@ -9,12 +9,10 @@ import { FaStopCircle } from "react-icons/fa";
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const storyVideoRef = useRef<HTMLDivElement>(null);
-  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
-  const [mobileVideoSrc, setMobileVideoSrc] = useState("");
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -37,34 +35,6 @@ export default function Home() {
       setShowControls(!showControls);
     }
   };
-
-  // Detect connection speed and set appropriate mobile video
-  useEffect(() => {
-    if (window.innerWidth < 500) {
-      // Check connection type for mobile devices
-      const connection =
-        (navigator as any).connection ||
-        (navigator as any).mozConnection ||
-        (navigator as any).webkitConnection;
-
-      if (
-        connection &&
-        (connection.effectiveType === "3g" ||
-          connection.effectiveType === "2g" ||
-          connection.saveData)
-      ) {
-        // Use lower quality for slow connections or data saver mode
-        setMobileVideoSrc(
-          "https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
-        );
-      } else {
-        // Use higher quality for good connections
-        setMobileVideoSrc(
-          "https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_1080p_h264.mp4"
-        );
-      }
-    }
-  }, []);
 
   // Detect scroll
   useEffect(() => {
@@ -112,14 +82,13 @@ export default function Home() {
       <section className="relative w-[100vw] h-[100vh] md:w-full md:h-screen overflow-hidden">
         {/* Video Background - Mobile */}
         <video
-          ref={mobileVideoRef}
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
-          src={mobileVideoSrc}
+          src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
         />
 
         {/* Video Background - Desktop */}
@@ -174,7 +143,8 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-lg md:text-xl text-gray-900 text-left leading-tight">
-                <span className="font-bold text-flagball-red">on-11</span>.&nbsp;&nbsp;
+                <span className="font-bold text-flagball-red">on-11</span>
+                .&nbsp;&nbsp;
                 <span className="md:hidden">
                   5 receivers, 5 linemen, and a QB
                 </span>
