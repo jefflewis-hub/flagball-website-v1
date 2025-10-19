@@ -42,14 +42,26 @@ export default function Home() {
   useEffect(() => {
     if (window.innerWidth < 500) {
       // Check connection type for mobile devices
-      const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-      
-      if (connection && (connection.effectiveType === '3g' || connection.effectiveType === '2g' || connection.saveData)) {
+      const connection =
+        (navigator as any).connection ||
+        (navigator as any).mozConnection ||
+        (navigator as any).webkitConnection;
+
+      if (
+        connection &&
+        (connection.effectiveType === "3g" ||
+          connection.effectiveType === "2g" ||
+          connection.saveData)
+      ) {
         // Use lower quality for slow connections or data saver mode
-        setMobileVideoSrc("https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4");
+        setMobileVideoSrc(
+          "https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
+        );
       } else {
         // Use higher quality for good connections
-        setMobileVideoSrc("https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_1080p_h264.mp4");
+        setMobileVideoSrc(
+          "https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_1080p_h264.mp4"
+        );
       }
     }
   }, []);
@@ -107,13 +119,7 @@ export default function Home() {
           playsInline
           preload="auto"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
-          style={{ 
-            contentVisibility: "auto",
-            width: "100dvw",
-            height: "100dvh",
-            minWidth: "100dvw",
-            minHeight: "100dvh"
-          }}
+          style={{ contentVisibility: "auto" }}
           src={mobileVideoSrc}
         />
 
@@ -170,7 +176,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-lg md:text-xl text-gray-900 text-left leading-tight">
-                <span className="font-bold text-flagball-red">on-11</span>.  
+                <span className="font-bold text-flagball-red">on-11</span>.
                 <span className="md:hidden">
                   5 receivers, 5 linemen, and a QB
                 </span>
