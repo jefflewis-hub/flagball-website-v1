@@ -8,11 +8,27 @@ import { FaStopCircle } from "react-icons/fa";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const storyVideoRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  // Aggressively preload and start playing hero video immediately
+  useEffect(() => {
+    if (heroVideoRef.current) {
+      // Force load and play as soon as possible
+      heroVideoRef.current.load();
+      const playPromise = heroVideoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          // Auto-play was prevented, silently handle
+          console.log("Auto-play prevented:", error);
+        });
+      }
+    }
+  }, []);
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -82,13 +98,18 @@ export default function Home() {
       <section className="relative w-[100dvw] h-[100dvh] md:w-full md:h-screen overflow-hidden">
         {/* Video Background - Mobile */}
         <video
+          ref={heroVideoRef}
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
-          style={{ contentVisibility: "auto" }}
+          style={{ 
+            contentVisibility: "auto",
+            willChange: "transform"
+          }}
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%232E2E2E' width='1' height='1'/%3E%3C/svg%3E"
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
@@ -98,13 +119,18 @@ export default function Home() {
 
         {/* Video Background - Desktop */}
         <video
+          ref={heroVideoRef}
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
           className="hidden min-[500px]:block absolute top-0 left-0 w-full h-full object-cover"
-          style={{ contentVisibility: "auto" }}
+          style={{ 
+            contentVisibility: "auto",
+            willChange: "transform"
+          }}
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%232E2E2E' width='1' height='1'/%3E%3C/svg%3E"
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"

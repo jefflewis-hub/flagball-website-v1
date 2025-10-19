@@ -76,13 +76,14 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Preload hero videos for instant loading */}
+        {/* Preload hero videos with high priority for instant loading */}
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
           type="video/mp4"
           media="(max-width: 499px)"
+          crossOrigin="anonymous"
         />
         <link
           rel="preload"
@@ -90,7 +91,48 @@ export default function RootLayout({
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
           type="video/mp4"
           media="(min-width: 500px)"
+          crossOrigin="anonymous"
         />
+        
+        {/* Prefetch video resources early */}
+        <link
+          rel="prefetch"
+          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
+          as="video"
+          type="video/mp4"
+          media="(max-width: 499px)"
+        />
+        
+        {/* Early video fetch script - starts downloading immediately */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                // Determine which video to fetch based on screen width
+                var isMobile = window.innerWidth < 500;
+                var videoUrl = isMobile 
+                  ? 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4'
+                  : 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4';
+                
+                // Start fetching video immediately with high priority
+                fetch(videoUrl, {
+                  method: 'GET',
+                  priority: 'high',
+                  mode: 'cors',
+                  credentials: 'omit'
+                }).then(function(response) {
+                  return response.blob();
+                }).then(function(blob) {
+                  // Store in memory for instant playback
+                  window.__heroVideoBlob__ = URL.createObjectURL(blob);
+                }).catch(function(err) {
+                  console.log('Video prefetch failed:', err);
+                });
+              })();
+            `,
+          }}
+        />
+        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
