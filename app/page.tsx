@@ -119,7 +119,6 @@ export default function Home() {
           playsInline
           preload="auto"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
-          style={{ contentVisibility: "auto" }}
           src={mobileVideoSrc}
         />
 
@@ -131,7 +130,6 @@ export default function Home() {
           playsInline
           preload="auto"
           className="hidden min-[500px]:block absolute top-0 left-0 w-full h-full object-cover"
-          style={{ contentVisibility: "auto" }}
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
