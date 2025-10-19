@@ -13,10 +13,23 @@ export default function Home() {
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect if mobile on mount
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 500);
+    
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 500);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Force mobile video to play immediately
   useEffect(() => {
-    if (mobileVideoRef.current && window.innerWidth < 500) {
+    if (mobileVideoRef.current && isMobile) {
       console.log("Attempting to force play mobile video");
       const video = mobileVideoRef.current;
 
@@ -35,7 +48,7 @@ export default function Home() {
         video.addEventListener("canplay", handleCanPlay, { once: true });
       }
     }
-  }, []);
+  }, [isMobile]);
 
   const handlePlayClick = () => {
     // Load video if not already loaded
@@ -95,49 +108,52 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative w-[100vw] h-[100vh] md:w-full md:h-screen overflow-hidden">
-        {/* Video Background - Mobile */}
-        <video
-          ref={mobileVideoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          disablePictureInPicture
-          disableRemotePlayback
-          className="min-[500px]:hidden absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
-          style={{
-            width: "100vw",
-            height: "100vh",
-            objectFit: "cover",
-          }}
-          src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
-          onLoadedData={(e) => {
-            console.log("Mobile video: loadedData event fired");
-            e.currentTarget.play();
-          }}
-          onCanPlay={(e) => {
-            console.log("Mobile video: canPlay event fired");
-            e.currentTarget.play();
-          }}
-          onPlay={() => console.log("Mobile video: playing started")}
-          onLoadStart={() => console.log("Mobile video: load started")}
-        />
-
-        {/* Video Background - Desktop */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="hidden min-[500px]:block absolute top-0 left-0 w-full h-full object-cover"
-        >
-          <source
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
-            type="video/mp4"
+        {/* Only render the video for the current device type */}
+        {isMobile ? (
+          /* Video Background - Mobile ONLY */
+          <video
+            ref={mobileVideoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
+            className="absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
+            style={{
+              width: "100vw",
+              height: "100vh",
+              objectFit: "cover",
+            }}
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
+            onLoadedData={(e) => {
+              console.log("Mobile video: loadedData event fired");
+              e.currentTarget.play();
+            }}
+            onCanPlay={(e) => {
+              console.log("Mobile video: canPlay event fired");
+              e.currentTarget.play();
+            }}
+            onPlay={() => console.log("Mobile video: playing started")}
+            onLoadStart={() => console.log("Mobile video: load started")}
           />
-        </video>
+        ) : (
+          /* Video Background - Desktop ONLY */
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          >
+            <source
+              src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
+              type="video/mp4"
+            />
+          </video>
+        )}
 
         {/* Dark Overlay */}
         <div className="absolute top-0 left-0 w-[100vw] h-[100vh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
