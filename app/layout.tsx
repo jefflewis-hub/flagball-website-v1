@@ -76,14 +76,22 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Preload mobile video - simple and effective */}
+        {/* Preload hero videos for instant loading */}
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
           type="video/mp4"
+          media="(max-width: 499px)"
         />
-        
+        <link
+          rel="preload"
+          as="video"
+          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
+          type="video/mp4"
+          media="(min-width: 500px)"
+        />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
