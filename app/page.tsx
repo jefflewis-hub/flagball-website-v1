@@ -164,12 +164,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-lg md:text-xl text-gray-900 text-left leading-tight">
-                <span className="font-bold text-flagball-red">on-11</span>.{" "}
+                <span className="font-bold text-flagball-red">on-11</span>.  
                 <span className="md:hidden">
-                  5 receivers, 5 lineman, and a QB
+                  5 receivers, 5 linemen, and a QB
                 </span>
                 <span className="hidden md:inline">
-                  There are 5 receivers, 5 lineman, and a QB
+                  There are 5 receivers, 5 linemen, and a QB
                 </span>
               </div>
             </div>
