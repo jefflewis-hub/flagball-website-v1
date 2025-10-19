@@ -8,25 +8,38 @@ import { FaStopCircle } from "react-icons/fa";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const storyVideoRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
-  // Aggressively preload and start playing hero video immediately
+  // Aggressively load mobile video immediately
   useEffect(() => {
-    if (heroVideoRef.current) {
-      // Force load and play as soon as possible
-      heroVideoRef.current.load();
-      const playPromise = heroVideoRef.current.play();
+    const mobileVideo = document.querySelector('video.min-\\[500px\\]\\:hidden') as HTMLVideoElement;
+    if (mobileVideo) {
+      // Use prefetched blob if available, otherwise force load
+      if ((window as any).__mobileVideoBlob__) {
+        mobileVideo.src = (window as any).__mobileVideoBlob__;
+      }
+      mobileVideo.load();
+      const playPromise = mobileVideo.play();
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          // Auto-play was prevented, silently handle
-          console.log("Auto-play prevented:", error);
+          console.log("Mobile video auto-play prevented:", error);
         });
       }
+    }
+    
+    // Load desktop video separately with lower priority
+    const desktopVideo = document.querySelector('video.hidden.min-\\[500px\\]\\:block') as HTMLVideoElement;
+    if (desktopVideo && window.innerWidth >= 500) {
+      setTimeout(() => {
+        desktopVideo.load();
+        desktopVideo.play().catch((error) => {
+          console.log("Desktop video auto-play prevented:", error);
+        });
+      }, 100);
     }
   }, []);
 
@@ -96,9 +109,8 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative w-[100dvw] h-[100dvh] md:w-full md:h-screen overflow-hidden">
-        {/* Video Background - Mobile */}
+        {/* Video Background - Mobile (PRIORITY LOAD) */}
         <video
-          ref={heroVideoRef}
           autoPlay
           loop
           muted
@@ -117,14 +129,13 @@ export default function Home() {
           />
         </video>
 
-        {/* Video Background - Desktop */}
+        {/* Video Background - Desktop (Lower priority) */}
         <video
-          ref={heroVideoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="hidden min-[500px]:block absolute top-0 left-0 w-full h-full object-cover"
           style={{ 
             contentVisibility: "auto",

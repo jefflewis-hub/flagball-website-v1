@@ -76,46 +76,25 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Preload hero videos with high priority for instant loading */}
+        {/* PRIORITY: Preload mobile video immediately - no screen size check */}
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
           type="video/mp4"
-          media="(max-width: 499px)"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          as="video"
-          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
-          type="video/mp4"
-          media="(min-width: 500px)"
           crossOrigin="anonymous"
         />
         
-        {/* Prefetch video resources early */}
-        <link
-          rel="prefetch"
-          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
-          as="video"
-          type="video/mp4"
-          media="(max-width: 499px)"
-        />
-        
-        {/* Early video fetch script - starts downloading immediately */}
+        {/* Early mobile video fetch script - starts downloading IMMEDIATELY */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                // Determine which video to fetch based on screen width
-                var isMobile = window.innerWidth < 500;
-                var videoUrl = isMobile 
-                  ? 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4'
-                  : 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4';
+                // ALWAYS fetch mobile video first for fastest load
+                var mobileVideoUrl = 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4';
                 
-                // Start fetching video immediately with high priority
-                fetch(videoUrl, {
+                // Start fetching mobile video immediately with highest priority
+                fetch(mobileVideoUrl, {
                   method: 'GET',
                   priority: 'high',
                   mode: 'cors',
@@ -123,10 +102,11 @@ export default function RootLayout({
                 }).then(function(response) {
                   return response.blob();
                 }).then(function(blob) {
-                  // Store in memory for instant playback
-                  window.__heroVideoBlob__ = URL.createObjectURL(blob);
+                  // Store mobile video in memory for instant playback
+                  window.__mobileVideoBlob__ = URL.createObjectURL(blob);
+                  console.log('Mobile video prefetched successfully');
                 }).catch(function(err) {
-                  console.log('Video prefetch failed:', err);
+                  console.log('Mobile video prefetch failed:', err);
                 });
               })();
             `,
