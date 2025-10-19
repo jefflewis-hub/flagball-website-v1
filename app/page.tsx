@@ -13,18 +13,19 @@ export default function Home() {
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [shouldLoadPoster, setShouldLoadPoster] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect if mobile on mount
   useEffect(() => {
     setIsMobile(window.innerWidth < 500);
-    
+
     const handleResize = () => {
       setIsMobile(window.innerWidth < 500);
     };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Force mobile video to play immediately
@@ -51,27 +52,14 @@ export default function Home() {
   }, [isMobile]);
 
   const handlePlayClick = () => {
-    // Load video if not already loaded
     if (!shouldLoadVideo) {
+      // First click: trigger video load (useEffect will auto-play)
       setShouldLoadVideo(true);
-      // Wait for video to load before playing
-      if (videoRef.current) {
-        const handleCanPlay = () => {
-          videoRef.current?.play();
-          setIsPlaying(true);
-          setShowControls(false);
-        };
-        videoRef.current.addEventListener("canplay", handleCanPlay, {
-          once: true,
-        });
-      }
-    } else {
-      // Video already loaded, just play
-      if (videoRef.current) {
-        videoRef.current.play();
-        setIsPlaying(true);
-        setShowControls(false);
-      }
+    } else if (videoRef.current) {
+      // Subsequent clicks: just play
+      videoRef.current.play();
+      setIsPlaying(true);
+      setShowControls(false);
     }
   };
 
@@ -99,8 +87,36 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Don't load video until user explicitly clicks play
-  // This saves bandwidth and speeds up initial page load
+  // Delay poster image loading until after critical resources
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldLoadPoster(true);
+    }, 3000); // Wait 3 seconds after page load
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-play video once it's loaded (fixes double-click issue)
+  useEffect(() => {
+    if (shouldLoadVideo && videoRef.current) {
+      const video = videoRef.current;
+      
+      const handleCanPlay = () => {
+        video.play().then(() => {
+          setIsPlaying(true);
+          setShowControls(false);
+        }).catch((e) => console.log("Play failed:", e));
+      };
+
+      // If already ready, play immediately
+      if (video.readyState >= 3) {
+        handleCanPlay();
+      } else {
+        // Otherwise wait for canplay
+        video.addEventListener("canplay", handleCanPlay, { once: true });
+      }
+    }
+  }, [shouldLoadVideo]);
 
   return (
     <main className="relative w-[100vw] md:w-screen overflow-x-hidden">
@@ -355,16 +371,21 @@ export default function Home() {
               style={{ paddingBottom: "56.25%" }}
               onClick={handleVideoClick}
             >
-              {/* Lazy-loaded poster image - only loads when in viewport */}
-              {!shouldLoadVideo && (
+              {/* Lazy-loaded poster image - loads 3s after page load */}
+              {!shouldLoadVideo && shouldLoadPoster && (
                 <Image
                   src="/poster.jpg"
                   alt="Flagball Story Video"
                   fill
                   sizes="(max-width: 768px) 100vw, 700px"
                   className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl object-cover"
-                  loading="lazy"
+                  priority={false}
                 />
+              )}
+              
+              {/* Placeholder while poster loads */}
+              {!shouldLoadVideo && !shouldLoadPoster && (
+                <div className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-gray-200" />
               )}
 
               {/* Video - only loads when user clicks play */}
