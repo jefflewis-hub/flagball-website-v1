@@ -18,13 +18,23 @@ export default function Home() {
   // Force mobile video to play immediately
   useEffect(() => {
     if (mobileVideoRef.current && window.innerWidth < 500) {
-      const playVideo = () => {
-        mobileVideoRef.current?.play().catch(() => {
-          // Retry if failed
-          setTimeout(playVideo, 50);
-        });
-      };
-      playVideo();
+      console.log('Attempting to force play mobile video');
+      const video = mobileVideoRef.current;
+      
+      // Ensure video is ready to play
+      if (video.readyState >= 2) {
+        // HAVE_CURRENT_DATA or better - can play
+        console.log('Video ready, playing immediately');
+        video.play().catch(e => console.log('Play failed:', e));
+      } else {
+        // Not ready yet, set up listener
+        console.log('Video not ready, waiting for canplay event');
+        const handleCanPlay = () => {
+          console.log('Video can play now, starting playback');
+          video.play().catch(e => console.log('Play failed:', e));
+        };
+        video.addEventListener('canplay', handleCanPlay, { once: true });
+      }
     }
   }, []);
 
@@ -113,10 +123,25 @@ export default function Home() {
           muted
           playsInline
           preload="auto"
+          disablePictureInPicture
+          disableRemotePlayback
           className="min-[500px]:hidden absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
+          style={{
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+          }}
           src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
-          onLoadedData={(e) => e.currentTarget.play()}
-          onCanPlay={(e) => e.currentTarget.play()}
+          onLoadedData={(e) => {
+            console.log('Mobile video: loadedData event fired');
+            e.currentTarget.play();
+          }}
+          onCanPlay={(e) => {
+            console.log('Mobile video: canPlay event fired');
+            e.currentTarget.play();
+          }}
+          onPlay={() => console.log('Mobile video: playing started')}
+          onLoadStart={() => console.log('Mobile video: load started')}
         />
 
         {/* Video Background - Desktop */}
