@@ -61,30 +61,41 @@ export default function Home() {
   }, []);
 
   // Lazy load trailer video with Intersection Observer
+  // Delay setup by 2 seconds to ensure hero video gets all bandwidth first
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !shouldLoadVideo) {
-            setShouldLoadVideo(true);
-          }
-        });
-      },
-      {
-        rootMargin: "100px", // Start loading 100px before video is visible
-        threshold: 0.1,
-      }
-    );
+    const setupObserver = () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !shouldLoadVideo) {
+              setShouldLoadVideo(true);
+            }
+          });
+        },
+        {
+          rootMargin: "50px", // Start loading only 50px before video is visible
+          threshold: 0.1,
+        }
+      );
 
-    const currentRef = storyVideoRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+      const currentRef = storyVideoRef.current;
+      if (currentRef) {
+        observer.observe(currentRef);
+      }
+
+      return () => {
+        if (currentRef) {
+          observer.unobserve(currentRef);
+        }
+      };
+    };
+
+    // Wait 2 seconds before even setting up the observer
+    // This gives hero video priority during critical initial load
+    const timer = setTimeout(setupObserver, 2000);
 
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
+      clearTimeout(timer);
     };
   }, [shouldLoadVideo]);
 
