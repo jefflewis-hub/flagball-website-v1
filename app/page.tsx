@@ -9,10 +9,24 @@ import { FaStopCircle } from "react-icons/fa";
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const storyVideoRef = useRef<HTMLDivElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  // Force mobile video to play immediately
+  useEffect(() => {
+    if (mobileVideoRef.current && window.innerWidth < 500) {
+      const playVideo = () => {
+        mobileVideoRef.current?.play().catch(() => {
+          // Retry if failed
+          setTimeout(playVideo, 50);
+        });
+      };
+      playVideo();
+    }
+  }, []);
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -82,6 +96,7 @@ export default function Home() {
       <section className="relative w-[100vw] h-[100vh] md:w-full md:h-screen overflow-hidden">
         {/* Video Background - Mobile */}
         <video
+          ref={mobileVideoRef}
           autoPlay
           loop
           muted
@@ -89,6 +104,8 @@ export default function Home() {
           preload="auto"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
           src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
+          onLoadedData={(e) => e.currentTarget.play()}
+          onCanPlay={(e) => e.currentTarget.play()}
         />
 
         {/* Video Background - Desktop */}

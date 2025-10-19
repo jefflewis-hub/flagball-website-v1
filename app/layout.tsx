@@ -76,13 +76,14 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Preload hero videos for instant loading */}
+        {/* Preload hero videos for instant loading with highest priority */}
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
           type="video/mp4"
           media="(max-width: 499px)"
+          fetchPriority="high"
         />
         <link
           rel="preload"
