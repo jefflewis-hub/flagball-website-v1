@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,19 +15,48 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
     setIsMobileMenuOpen(false);
   };
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <>
       {/* Backdrop overlay for mobile menu - only below the menu */}
       {isMobileMenuOpen && (
         <div
           className="fixed left-0 right-0 bottom-0 top-[19rem] bg-black/80 z-40 md:hidden"
+          style={{ 
+            transform: 'translateZ(0)',
+            WebkitTransform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
           onClick={closeMobileMenu}
         />
       )}
 
       <nav
         className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
-        style={{ backgroundColor: bgColor || "transparent" }}
+        style={{ 
+          backgroundColor: bgColor || "transparent",
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)',
+          backfaceVisibility: 'hidden'
+        }}
       >
         <div className="w-full px-4 py-4 md:px-10 md:py-6">
           <div className="flex justify-between items-center">
@@ -110,8 +139,14 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
           {/* Mobile Menu */}
           <div
             className={`fixed left-0 right-0 top-[4.5rem] md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-              isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 pointer-events-none"
             }`}
+            style={{ 
+              transform: 'translateZ(0)',
+              WebkitTransform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+              willChange: isMobileMenuOpen ? 'max-height, opacity' : 'auto'
+            }}
           >
             <div className="bg-white shadow-lg">
               <div className="divide-y divide-gray-200">
