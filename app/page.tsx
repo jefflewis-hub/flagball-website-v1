@@ -105,11 +105,11 @@ export default function Home() {
   }, [shouldLoadVideo]);
 
   return (
-    <main className="relative w-[100dvw] md:w-screen overflow-x-hidden">
+    <main className="relative w-[100vw] md:w-screen overflow-x-hidden">
       <Navigation bgColor={isScrolled ? "#1F1F1E" : "transparent"} />
 
       {/* Hero Section */}
-      <section className="relative w-[100dvw] h-[100dvh] md:w-full md:h-screen overflow-hidden">
+      <section className="relative w-[100vw] h-[100vh] md:w-full md:h-screen overflow-hidden">
         {/* Video Background - Mobile */}
         <video
           ref={mobileVideoRef}
@@ -118,7 +118,7 @@ export default function Home() {
           muted
           playsInline
           preload="auto"
-          className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
+          className="min-[500px]:hidden absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
           src={mobileVideoSrc}
         />
 
@@ -138,7 +138,7 @@ export default function Home() {
         </video>
 
         {/* Dark Overlay */}
-        <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
+        <div className="absolute top-0 left-0 w-[100vw] h-[100vh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
 
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full px-5 md:px-4 pt-16 md:pt-0">
@@ -174,7 +174,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-lg md:text-xl text-gray-900 text-left leading-tight">
-                <span className="font-bold text-flagball-red">on-11</span>.  
+                <span className="font-bold text-flagball-red">on-11</span>.
                 <span className="md:hidden">
                   5 receivers, 5 linemen, and a QB
                 </span>
