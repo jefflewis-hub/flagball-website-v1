@@ -908,7 +908,7 @@ export default function RulesModule() {
           /* Cover Page */
           <div
             ref={contentRef}
-            className="flex-1 overflow-y-auto px-4 pb-16 min-[500px]:px-8 min-[500px]:pb-20 pt-12 min-[500px]:pt-6 min-[1000px]:pt-4"
+            className="flex-1 overflow-y-auto px-4 pb-16 min-[500px]:px-8 min-[500px]:pb-20 pt-20 min-[500px]:pt-6 min-[1000px]:pt-4"
           >
             <div className="flex flex-col items-center justify-center h-full space-y-6 min-[500px]:space-y-8">
               <div className="relative">
@@ -944,7 +944,7 @@ export default function RulesModule() {
             {/* Rules Content */}
             <div
               ref={contentRef}
-              className="flex-1 overflow-y-auto px-4 pb-16 min-[500px]:px-8 min-[500px]:pb-20 pt-12 min-[500px]:pt-6 min-[1000px]:pt-4"
+              className="flex-1 overflow-y-auto px-4 pb-16 min-[500px]:px-8 min-[500px]:pb-20 pt-20 min-[500px]:pt-6 min-[1000px]:pt-4"
             >
               <div className="text-gray-700 leading-relaxed text-sm min-[500px]:text-lg">
                 {formatContent(ruleSections[currentPage].content)}
