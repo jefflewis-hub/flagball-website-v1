@@ -20,7 +20,7 @@ export default function RulesPage() {
           /* Mobile (<500px): Full width, account for navbar */
           .rules-container-width {
             width: 100dvw !important;
-            height: calc(100dvh - 4rem) !important;
+            height: calc(100dvh - 4.5rem) !important;
           }
           
           /* Desktop 500-999px: Full width with padding */
@@ -56,7 +56,7 @@ export default function RulesPage() {
       <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] min-[500px]:w-full min-[500px]:h-full bg-[#2E2E2E] opacity-80" />
 
       {/* Content */}
-      <div className="relative z-10 flex items-start justify-center max-[499px]:h-[100dvh] min-[500px]:h-full max-[499px]:p-0 max-[499px]:pt-16 min-[500px]:p-4 min-[500px]:pt-20">
+      <div className="relative z-10 flex items-start justify-center max-[499px]:h-[100dvh] min-[500px]:h-full max-[499px]:p-0 max-[499px]:pt-[4.5rem] min-[500px]:p-4 min-[500px]:pt-20">
         <div className="rules-container-width">
           <RulesModule />
         </div>
