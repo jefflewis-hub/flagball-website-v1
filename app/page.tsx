@@ -137,8 +137,8 @@ export default function Home() {
         {/* Dark Overlay */}
         <div className="absolute top-0 left-0 w-[100vw] h-[100vh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-5 md:px-4 pt-16 md:pt-0">
+        {/* Content - Absolutely positioned, locked to center, unaffected by layout shifts */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center px-5 md:px-4">
           <Image
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
             alt="FLAGBALL"
