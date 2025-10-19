@@ -14,28 +14,49 @@ export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
-  // Force video to load and play immediately
+  // Video ref for mobile
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
+  const desktopVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Force video to play as soon as any data is available
   useEffect(() => {
-    // Mobile video
-    const mobileVideo = document.querySelector('video.min-\\[500px\\]\\:hidden') as HTMLVideoElement;
-    if (mobileVideo && window.innerWidth < 500) {
-      // Force load immediately
-      mobileVideo.load();
-      // Try to play as soon as possible
-      const attemptPlay = () => {
-        mobileVideo.play().catch(() => {
-          // Retry if failed
-          setTimeout(attemptPlay, 100);
-        });
+    const mobileVid = mobileVideoRef.current;
+    const desktopVid = desktopVideoRef.current;
+    
+    if (mobileVid && window.innerWidth < 500) {
+      // Play immediately when enough data is available
+      const playWhenReady = () => {
+        mobileVid.play().catch(() => {});
       };
-      attemptPlay();
+      
+      mobileVid.addEventListener('loadeddata', playWhenReady);
+      mobileVid.addEventListener('canplay', playWhenReady);
+      
+      // Also try to play immediately
+      mobileVid.load();
+      playWhenReady();
+      
+      return () => {
+        mobileVid.removeEventListener('loadeddata', playWhenReady);
+        mobileVid.removeEventListener('canplay', playWhenReady);
+      };
     }
     
-    // Desktop video
-    const desktopVideo = document.querySelector('video.hidden.min-\\[500px\\]\\:block') as HTMLVideoElement;
-    if (desktopVideo && window.innerWidth >= 500) {
-      desktopVideo.load();
-      desktopVideo.play().catch(() => {});
+    if (desktopVid && window.innerWidth >= 500) {
+      const playWhenReady = () => {
+        desktopVid.play().catch(() => {});
+      };
+      
+      desktopVid.addEventListener('loadeddata', playWhenReady);
+      desktopVid.addEventListener('canplay', playWhenReady);
+      
+      desktopVid.load();
+      playWhenReady();
+      
+      return () => {
+        desktopVid.removeEventListener('loadeddata', playWhenReady);
+        desktopVid.removeEventListener('canplay', playWhenReady);
+      };
     }
   }, []);
 
@@ -107,6 +128,7 @@ export default function Home() {
       <section className="relative w-[100dvw] h-[100dvh] md:w-full md:h-screen overflow-hidden">
         {/* Video Background - Mobile (PRIORITY LOAD) */}
         <video
+          ref={mobileVideoRef}
           autoPlay
           loop
           muted
@@ -120,15 +142,18 @@ export default function Home() {
           }}
           poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%232E2E2E' width='1' height='1'/%3E%3C/svg%3E"
           src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
+          onLoadedData={(e) => e.currentTarget.play().catch(() => {})}
+          onCanPlay={(e) => e.currentTarget.play().catch(() => {})}
         />
 
         {/* Video Background - Desktop (Lower priority) */}
         <video
+          ref={desktopVideoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           disablePictureInPicture
           x-webkit-airplay="deny"
           className="hidden min-[500px]:block absolute top-0 left-0 w-full h-full object-cover"
@@ -137,6 +162,8 @@ export default function Home() {
           }}
           poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%232E2E2E' width='1' height='1'/%3E%3C/svg%3E"
           src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_landing_page_v3.mp4"
+          onLoadedData={(e) => e.currentTarget.play().catch(() => {})}
+          onCanPlay={(e) => e.currentTarget.play().catch(() => {})}
         />
 
         {/* Dark Overlay */}
