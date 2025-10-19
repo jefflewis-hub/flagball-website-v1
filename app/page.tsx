@@ -9,10 +9,12 @@ import { FaStopCircle } from "react-icons/fa";
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const storyVideoRef = useRef<HTMLDivElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [mobileVideoSrc, setMobileVideoSrc] = useState("");
 
   const handlePlayClick = () => {
     if (videoRef.current) {
@@ -35,6 +37,22 @@ export default function Home() {
       setShowControls(!showControls);
     }
   };
+
+  // Detect connection speed and set appropriate mobile video
+  useEffect(() => {
+    if (window.innerWidth < 500) {
+      // Check connection type for mobile devices
+      const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+      
+      if (connection && (connection.effectiveType === '3g' || connection.effectiveType === '2g' || connection.saveData)) {
+        // Use lower quality for slow connections or data saver mode
+        setMobileVideoSrc("https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4");
+      } else {
+        // Use higher quality for good connections
+        setMobileVideoSrc("https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_1080p_h264.mp4");
+      }
+    }
+  }, []);
 
   // Detect scroll
   useEffect(() => {
@@ -82,6 +100,7 @@ export default function Home() {
       <section className="relative w-[100dvw] h-[100dvh] md:w-full md:h-screen overflow-hidden">
         {/* Video Background - Mobile */}
         <video
+          ref={mobileVideoRef}
           autoPlay
           loop
           muted
@@ -89,12 +108,8 @@ export default function Home() {
           preload="auto"
           className="min-[500px]:hidden absolute top-0 left-0 w-[100dvw] h-[100dvh] object-cover"
           style={{ contentVisibility: "auto" }}
-        >
-          <source
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
-            type="video/mp4"
-          />
-        </video>
+          src={mobileVideoSrc}
+        />
 
         {/* Video Background - Desktop */}
         <video
