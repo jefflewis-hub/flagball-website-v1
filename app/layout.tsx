@@ -76,37 +76,55 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* PRIORITY: Preload mobile video immediately - no screen size check */}
+        {/* CRITICAL: Preload mobile video with highest priority for immediate streaming */}
         <link
           rel="preload"
           as="video"
           href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4"
           type="video/mp4"
           crossOrigin="anonymous"
+          fetchPriority="high"
         />
         
-        {/* Early mobile video fetch script - starts downloading IMMEDIATELY */}
+        {/* Service Worker registration for video caching */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              // Register service worker for aggressive video caching
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('SW registered:', registration.scope);
+                  }).catch(function(error) {
+                    console.log('SW registration failed:', error);
+                  });
+                });
+              }
+            `,
+          }}
+        />
+        
+        {/* Immediate video element injection for instant load */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Create and inject video element ASAP for fastest load
               (function() {
-                // ALWAYS fetch mobile video first for fastest load
-                var mobileVideoUrl = 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4';
-                
-                // Start fetching mobile video immediately with highest priority
-                fetch(mobileVideoUrl, {
-                  method: 'GET',
-                  priority: 'high',
-                  mode: 'cors',
-                  credentials: 'omit'
-                }).then(function(response) {
-                  return response.blob();
-                }).then(function(blob) {
-                  // Store mobile video in memory for instant playback
-                  window.__mobileVideoBlob__ = URL.createObjectURL(blob);
-                  console.log('Mobile video prefetched successfully');
-                }).catch(function(err) {
-                  console.log('Mobile video prefetch failed:', err);
+                window.__videoReady__ = false;
+                var video = document.createElement('video');
+                video.setAttribute('preload', 'auto');
+                video.setAttribute('autoplay', '');
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
+                video.setAttribute('loop', '');
+                video.style.display = 'none';
+                video.src = 'https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_landing_video_mobile_v1.mp4';
+                document.documentElement.appendChild(video);
+                video.load();
+                video.play().catch(function() {});
+                window.__preloadedVideo__ = video;
+                video.addEventListener('loadeddata', function() {
+                  window.__videoReady__ = true;
                 });
               })();
             `,

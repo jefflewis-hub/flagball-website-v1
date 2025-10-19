@@ -14,32 +14,40 @@ export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
-  // Aggressively load mobile video immediately
+  // Use preloaded video for instant playback
   useEffect(() => {
-    const mobileVideo = document.querySelector('video.min-\\[500px\\]\\:hidden') as HTMLVideoElement;
-    if (mobileVideo) {
-      // Use prefetched blob if available, otherwise force load
-      if ((window as any).__mobileVideoBlob__) {
-        mobileVideo.src = (window as any).__mobileVideoBlob__;
-      }
-      mobileVideo.load();
-      const playPromise = mobileVideo.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.log("Mobile video auto-play prevented:", error);
-        });
-      }
-    }
+    const isMobile = window.innerWidth < 500;
     
-    // Load desktop video separately with lower priority
-    const desktopVideo = document.querySelector('video.hidden.min-\\[500px\\]\\:block') as HTMLVideoElement;
-    if (desktopVideo && window.innerWidth >= 500) {
-      setTimeout(() => {
+    if (isMobile) {
+      const mobileVideo = document.querySelector('video.min-\\[500px\\]\\:hidden') as HTMLVideoElement;
+      const preloadedVideo = (window as any).__preloadedVideo__;
+      
+      if (mobileVideo && preloadedVideo) {
+        // Clone preloaded video state to visible video element
+        mobileVideo.src = preloadedVideo.src;
+        if ((window as any).__videoReady__) {
+          // Video already loaded, copy current time and play
+          mobileVideo.currentTime = preloadedVideo.currentTime;
+          mobileVideo.play().catch(() => {});
+        } else {
+          // Still loading, let it continue
+          mobileVideo.load();
+          mobileVideo.play().catch(() => {});
+        }
+        // Clean up hidden preloaded video
+        setTimeout(() => {
+          if (preloadedVideo.parentNode) {
+            preloadedVideo.parentNode.removeChild(preloadedVideo);
+          }
+        }, 100);
+      }
+    } else {
+      // Desktop video
+      const desktopVideo = document.querySelector('video.hidden.min-\\[500px\\]\\:block') as HTMLVideoElement;
+      if (desktopVideo) {
         desktopVideo.load();
-        desktopVideo.play().catch((error) => {
-          console.log("Desktop video auto-play prevented:", error);
-        });
-      }, 100);
+        desktopVideo.play().catch(() => {});
+      }
     }
   }, []);
 
