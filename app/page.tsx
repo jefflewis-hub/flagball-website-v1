@@ -100,12 +100,15 @@ export default function Home() {
   useEffect(() => {
     if (shouldLoadVideo && videoRef.current) {
       const video = videoRef.current;
-      
+
       const handleCanPlay = () => {
-        video.play().then(() => {
-          setIsPlaying(true);
-          setShowControls(false);
-        }).catch((e) => console.log("Play failed:", e));
+        video
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            setShowControls(false);
+          })
+          .catch((e) => console.log("Play failed:", e));
       };
 
       // If already ready, play immediately
@@ -171,11 +174,11 @@ export default function Home() {
           </video>
         )}
 
-        {/* Dark Overlay */}
-        <div className="absolute top-0 left-0 w-[100vw] h-[100vh] md:w-full md:h-full bg-[#2E2E2E] opacity-70" />
+        {/* Dark Overlay - Between video (z-0) and content (z-20) */}
+        <div className="absolute top-0 left-0 w-[100vw] h-[100vh] md:w-full md:h-full bg-[#2E2E2E] opacity-70 z-10" />
 
         {/* Content - Absolutely positioned, locked to center, unaffected by layout shifts */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center px-5 md:px-4">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center px-5 md:px-4">
           <Image
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
             alt="FLAGBALL"
@@ -382,7 +385,7 @@ export default function Home() {
                   priority={false}
                 />
               )}
-              
+
               {/* Placeholder while poster loads */}
               {!shouldLoadVideo && !shouldLoadPoster && (
                 <div className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-gray-200" />
