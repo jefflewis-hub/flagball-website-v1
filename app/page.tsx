@@ -8,7 +8,6 @@ import { FaStopCircle } from "react-icons/fa";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,29 +26,6 @@ export default function Home() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Force mobile video to play immediately
-  useEffect(() => {
-    if (mobileVideoRef.current && isMobile) {
-      console.log("Attempting to force play mobile video");
-      const video = mobileVideoRef.current;
-
-      // Ensure video is ready to play
-      if (video.readyState >= 2) {
-        // HAVE_CURRENT_DATA or better - can play
-        console.log("Video ready, playing immediately");
-        video.play().catch((e) => console.log("Play failed:", e));
-      } else {
-        // Not ready yet, set up listener
-        console.log("Video not ready, waiting for canplay event");
-        const handleCanPlay = () => {
-          console.log("Video can play now, starting playback");
-          video.play().catch((e) => console.log("Play failed:", e));
-        };
-        video.addEventListener("canplay", handleCanPlay, { once: true });
-      }
-    }
-  }, [isMobile]);
 
   const handlePlayClick = () => {
     if (!shouldLoadVideo) {
@@ -129,9 +105,8 @@ export default function Home() {
       <section className="relative w-[100vw] h-[100vh] md:w-full md:h-screen overflow-hidden">
         {/* Only render the video for the current device type */}
         {isMobile ? (
-          /* Video Background - Mobile ONLY */
+          /* Video Background - Mobile ONLY - Relies on native autoPlay for fastest loading */
           <video
-            ref={mobileVideoRef}
             autoPlay
             loop
             muted
@@ -146,16 +121,6 @@ export default function Home() {
               objectFit: "cover",
             }}
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
-            onLoadedData={(e) => {
-              console.log("Mobile video: loadedData event fired");
-              e.currentTarget.play();
-            }}
-            onCanPlay={(e) => {
-              console.log("Mobile video: canPlay event fired");
-              e.currentTarget.play();
-            }}
-            onPlay={() => console.log("Mobile video: playing started")}
-            onLoadStart={() => console.log("Mobile video: load started")}
           />
         ) : (
           /* Video Background - Desktop ONLY */
