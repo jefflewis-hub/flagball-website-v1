@@ -120,7 +120,7 @@ export default function Home() {
               height: "100vh",
               objectFit: "cover",
             }}
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flag_mobile_720p_h264.mp4"
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/mobile_landing_v3_1080p_hevc.mp4"
           />
         ) : (
           /* Video Background - Desktop ONLY */
