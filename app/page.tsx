@@ -112,6 +112,7 @@ export default function Home() {
             muted
             playsInline
             preload="auto"
+            poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_mobile_landing_v4_poster_1280.webp"
             disablePictureInPicture
             disableRemotePlayback
             className="absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"
@@ -120,7 +121,7 @@ export default function Home() {
               height: "100vh",
               objectFit: "cover",
             }}
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/mobile_landing_v3_1080p_hevc.mp4"
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_mobile_landing_v4_1080p_hevc.mp4"
           />
         ) : (
           /* Video Background - Desktop ONLY */
