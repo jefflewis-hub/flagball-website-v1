@@ -112,7 +112,6 @@ export default function Home() {
             muted
             playsInline
             preload="auto"
-            poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_mobile_landing_v4_poster_1280.webp"
             disablePictureInPicture
             disableRemotePlayback
             className="absolute top-0 left-0 w-[100vw] h-[100vh] object-cover"

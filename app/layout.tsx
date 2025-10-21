@@ -76,15 +76,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Preload hero videos and poster for instant loading with highest priority */}
-        <link
-          rel="preload"
-          as="image"
-          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_mobile_landing_v4_poster_1280.webp"
-          type="image/webp"
-          media="(max-width: 499px)"
-          fetchPriority="high"
-        />
+        {/* Preload hero videos for instant loading with highest priority */}
         <link
           rel="preload"
           as="video"
