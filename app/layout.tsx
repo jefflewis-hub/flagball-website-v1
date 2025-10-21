@@ -80,7 +80,7 @@ export default function RootLayout({
         <link
           rel="preload"
           as="video"
-          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_mobile_landing_v4_1080p_hevc.mp4"
+          href="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_mobile_landing_v5_1080p_hevc.mp4"
           type="video/mp4"
           media="(max-width: 499px)"
           fetchPriority="high"
