@@ -162,13 +162,13 @@ export default function PartnerPage() {
                 Website
               </label>
               <input
-                type="url"
+                type="text"
                 id="organizationWebsite"
                 name="organizationWebsite"
                 value={formData.organizationWebsite}
                 onChange={handleChange}
                 required
-                placeholder="website"
+                placeholder="example.com"
                 className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
               />
             </div>
