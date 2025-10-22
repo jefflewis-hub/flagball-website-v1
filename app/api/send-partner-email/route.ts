@@ -16,9 +16,9 @@ export async function POST(request: Request) {
     }
 
     // Send email using Resend
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: 'Flagball Partnership Form <partnerships@flagball.com>',
-      to: 'josh@grovehillresearch.com',
+      to: ['josh@grovehillresearch.com'],
       replyTo: email,
       subject: 'New Partnership Inquiry - Flagball',
       html: `
@@ -29,6 +29,14 @@ export async function POST(request: Request) {
         <p><strong>Organization Website:</strong> ${organizationWebsite}</p>
       `,
     });
+
+    if (error) {
+      console.error('Resend API error:', error);
+      return NextResponse.json(
+        { error: 'Failed to send email' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ success: true, data }, { status: 200 });
   } catch (error) {

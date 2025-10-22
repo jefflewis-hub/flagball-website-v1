@@ -198,7 +198,9 @@ export default function PartnerPage() {
             {showSuccess && (
               <div className="flex flex-col items-center justify-center py-16 min-[500px]:py-24 text-center">
                 <p className="text-gray-800 font-medium text-lg min-[500px]:text-2xl mb-6">
-                  Thanks for your interest!<br />We will be in touch shortly.
+                  Thanks for your interest!
+                  <br />
+                  We will be in touch shortly.
                 </p>
                 <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center animate-scale-in">
                   <svg
