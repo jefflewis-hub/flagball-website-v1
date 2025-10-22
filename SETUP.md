@@ -31,6 +31,7 @@ BLOB_READ_WRITE_TOKEN=your_blob_token_here
 ```
 
 **To get your Resend API Key:**
+
 1. Sign up at [https://resend.com](https://resend.com)
 2. Create an API key at [https://resend.com/api-keys](https://resend.com/api-keys)
 3. Copy the key and paste it into your `.env.local` file
@@ -59,10 +60,12 @@ npm start
 The following media assets are configured:
 
 ✅ **flagball_landing_video.mp4** - Downloaded from Vercel Blob
+
 - Used on homepage background
 - Also used as trailer placeholder in /watch page
 
 ⏳ **Missing Assets** (using gradient fallbacks):
+
 - flagball_trailer.mp4 (currently using landing video)
 - partner_background.webp (using purple gradient)
 - rules_background.webp (using blue gradient)
@@ -145,6 +148,7 @@ Then deploy the `.next` folder to your hosting provider.
 The partnership form (`/partner`) automatically sends inquiries to: **josh@grovehillresearch.com**
 
 The form uses the Resend API to deliver emails directly, including:
+
 - User's contact information
 - Organization details
 - Reply-to set to the user's email for easy responses
@@ -157,5 +161,3 @@ The form uses the Resend API to deliver emails directly, including:
 - **Tailwind CSS 4** - Styling
 - **Resend** - Email delivery API
 - **Vercel Blob** - Media storage
-
-

@@ -15,11 +15,13 @@ export default function PartnerPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitMessage("");
+    setShowSuccess(false);
 
     try {
       const response = await fetch("/api/send-partner-email", {
@@ -33,9 +35,10 @@ export default function PartnerPage() {
       const data = await response.json();
 
       if (response.ok) {
+        setShowSuccess(true);
         setSubmitMessage("Thank you! Your inquiry has been sent successfully.");
         
-        // Reset form
+        // Reset form after showing success
         setTimeout(() => {
           setFormData({
             firstName: "",
@@ -44,6 +47,7 @@ export default function PartnerPage() {
             organizationWebsite: "",
           });
           setSubmitMessage("");
+          setShowSuccess(false);
         }, 3000);
       } else {
         setSubmitMessage(data.error || "Failed to send. Please try again.");
@@ -170,17 +174,43 @@ export default function PartnerPage() {
             </div>
 
             <div className="border-t border-gray-400 pt-[min(3vmin,1.5rem)] mt-[min(4vmin,2rem)]">
+              {/* Loading and Success Indicator */}
+              {(isSubmitting || showSuccess) && (
+                <div className="flex flex-col items-center justify-center mb-4">
+                  {isSubmitting && !showSuccess && (
+                    <div className="w-12 h-12 border-4 border-gray-300 border-t-flagball-red rounded-full animate-spin" />
+                  )}
+                  {showSuccess && (
+                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center animate-scale-in">
+                      <svg
+                        className="w-8 h-8 text-white animate-draw-check"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || showSuccess}
                 className="w-full bg-flagball-red text-white py-[min(2vmin,1rem)] rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide text-base min-[500px]:text-lg"
               >
-                {isSubmitting ? "Submitting..." : "Submit"}
+                {isSubmitting ? "Submitting..." : showSuccess ? "Sent!" : "Submit"}
               </button>
             </div>
 
-            {submitMessage && (
-              <p className="text-center text-sm text-gray-600">
+            {submitMessage && !isSubmitting && (
+              <p className="text-center text-sm text-gray-600 mt-2">
                 {submitMessage}
               </p>
             )}
