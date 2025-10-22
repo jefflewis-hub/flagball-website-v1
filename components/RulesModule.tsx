@@ -746,9 +746,7 @@ export default function RulesModule() {
         </button>
 
         <div
-          className={`flex flex-col flex-1 ${
-            isTOCOpen ? "" : "hidden"
-          }`}
+          className={`flex flex-col flex-1 ${isTOCOpen ? "" : "hidden"}`}
           style={{
             overflowY: isTOCOpen ? "auto" : "hidden",
             WebkitOverflowScrolling: "touch",
