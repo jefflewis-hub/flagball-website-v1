@@ -37,7 +37,7 @@ export default function PartnerPage() {
       if (response.ok) {
         setShowSuccess(true);
         setSubmitMessage("Thank you! Your inquiry has been sent successfully.");
-        
+
         // Reset form after showing success
         setTimeout(() => {
           setFormData({
@@ -97,122 +97,125 @@ export default function PartnerPage() {
           </button>
 
           <form onSubmit={handleSubmit} className="space-y-[min(3vmin,1.5rem)]">
-            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
-              <label
-                htmlFor="firstName"
-                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
-              >
-                First Name
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-                placeholder="name"
-                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
-              />
-            </div>
-
-            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
-              <label
-                htmlFor="email"
-                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="email"
-                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
-              />
-            </div>
-
-            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
-              <label
-                htmlFor="organization"
-                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
-              >
-                Organization
-              </label>
-              <input
-                type="text"
-                id="organization"
-                name="organization"
-                value={formData.organization}
-                onChange={handleChange}
-                required
-                placeholder="organization"
-                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
-              />
-            </div>
-
-            <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4">
-              <label
-                htmlFor="organizationWebsite"
-                className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
-              >
-                Website
-              </label>
-              <input
-                type="text"
-                id="organizationWebsite"
-                name="organizationWebsite"
-                value={formData.organizationWebsite}
-                onChange={handleChange}
-                required
-                placeholder="example.com"
-                className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
-              />
-            </div>
-
-            <div className="border-t border-gray-400 pt-[min(3vmin,1.5rem)] mt-[min(4vmin,2rem)]">
-              {/* Loading and Success Indicator */}
-              {(isSubmitting || showSuccess) && (
-                <div className="flex flex-col items-center justify-center mb-4">
-                  {isSubmitting && !showSuccess && (
-                    <div className="w-12 h-12 border-4 border-gray-300 border-t-flagball-red rounded-full animate-spin" />
-                  )}
-                  {showSuccess && (
-                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center animate-scale-in">
-                      <svg
-                        className="w-8 h-8 text-white animate-draw-check"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                  )}
+            {/* Show form fields only when not submitting or showing success */}
+            {!isSubmitting && !showSuccess && (
+              <>
+                <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
+                  <label
+                    htmlFor="firstName"
+                    className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required
+                    placeholder="name"
+                    className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
+                  />
                 </div>
-              )}
 
-              <button
-                type="submit"
-                disabled={isSubmitting || showSuccess}
-                className="w-full bg-flagball-red text-white py-[min(2vmin,1rem)] rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide text-base min-[500px]:text-lg"
-              >
-                {isSubmitting ? "Submitting..." : showSuccess ? "Sent!" : "Submit"}
-              </button>
-            </div>
+                <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
+                  <label
+                    htmlFor="email"
+                    className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="email"
+                    className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
+                  />
+                </div>
 
-            {submitMessage && !isSubmitting && (
-              <p className="text-center text-sm text-gray-600 mt-2">
-                {submitMessage}
-              </p>
+                <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4 pb-[min(3vmin,1.5rem)] border-b border-gray-400">
+                  <label
+                    htmlFor="organization"
+                    className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
+                  >
+                    Organization
+                  </label>
+                  <input
+                    type="text"
+                    id="organization"
+                    name="organization"
+                    value={formData.organization}
+                    onChange={handleChange}
+                    required
+                    placeholder="organization"
+                    className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
+                  />
+                </div>
+
+                <div className="flex flex-col min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-4">
+                  <label
+                    htmlFor="organizationWebsite"
+                    className="block text-gray-800 font-medium mb-2 min-[500px]:mb-0 min-[500px]:w-48 text-base min-[500px]:text-xl"
+                  >
+                    Website
+                  </label>
+                  <input
+                    type="text"
+                    id="organizationWebsite"
+                    name="organizationWebsite"
+                    value={formData.organizationWebsite}
+                    onChange={handleChange}
+                    required
+                    placeholder="example.com"
+                    className="w-full min-[500px]:flex-1 px-3 min-[500px]:px-4 py-[min(2vmin,1rem)] min-[500px]:py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none placeholder:text-gray-400 placeholder:font-normal text-black uppercase font-bold text-sm min-[500px]:text-base"
+                  />
+                </div>
+
+                <div className="border-t border-gray-400 pt-[min(3vmin,1.5rem)] mt-[min(4vmin,2rem)]">
+                  <button
+                    type="submit"
+                    className="w-full bg-flagball-red text-white py-[min(2vmin,1rem)] rounded-lg font-bold hover:opacity-90 transition-opacity uppercase tracking-wide text-base min-[500px]:text-lg"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Loading State */}
+            {isSubmitting && !showSuccess && (
+              <div className="flex flex-col items-center justify-center py-16 min-[500px]:py-24">
+                <div className="w-16 h-16 border-4 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+              </div>
+            )}
+
+            {/* Success State */}
+            {showSuccess && (
+              <div className="flex flex-col items-center justify-center py-16 min-[500px]:py-24 text-center">
+                <p className="text-gray-800 font-medium text-lg min-[500px]:text-2xl mb-6">
+                  Thanks for your interest!<br />We will be in touch shortly.
+                </p>
+                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center animate-scale-in">
+                  <svg
+                    className="w-10 h-10 text-white animate-draw-check"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+              </div>
             )}
           </form>
         </div>
