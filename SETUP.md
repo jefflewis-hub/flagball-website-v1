@@ -18,6 +18,25 @@ This is the official website for Flagball, launching June 2026. The website incl
 npm install
 ```
 
+### Environment Setup
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```env
+# Required for partnership form email functionality
+RESEND_API_KEY=your_resend_api_key_here
+
+# Optional for Vercel Blob operations
+BLOB_READ_WRITE_TOKEN=your_blob_token_here
+```
+
+**To get your Resend API Key:**
+1. Sign up at [https://resend.com](https://resend.com)
+2. Create an API key at [https://resend.com/api-keys](https://resend.com/api-keys)
+3. Copy the key and paste it into your `.env.local` file
+
+**Note:** The partnership form will not work without a valid Resend API key.
+
 ### Development
 
 ```bash
@@ -106,8 +125,12 @@ Edit `/components/RulesModule.tsx` and modify the `ruleSections` array.
 
 1. Push your code to GitHub
 2. Connect your repository to Vercel
-3. Add environment variable: `BLOB_READ_WRITE_TOKEN`
+3. Add environment variables:
+   - `RESEND_API_KEY` (required for partnership form)
+   - `BLOB_READ_WRITE_TOKEN` (optional for media)
 4. Deploy!
+
+**Important:** Make sure to add your Resend API key in the Vercel project settings under Environment Variables.
 
 ### Manual Deployment
 
@@ -119,7 +142,12 @@ Then deploy the `.next` folder to your hosting provider.
 
 ## Contact
 
-For partnership inquiries, the form sends to: josh@grovehillresearch.com
+The partnership form (`/partner`) automatically sends inquiries to: **josh@grovehillresearch.com**
+
+The form uses the Resend API to deliver emails directly, including:
+- User's contact information
+- Organization details
+- Reply-to set to the user's email for easy responses
 
 ## Technologies Used
 
@@ -127,6 +155,7 @@ For partnership inquiries, the form sends to: josh@grovehillresearch.com
 - **React 19.1.0** - UI library
 - **TypeScript** - Type safety
 - **Tailwind CSS 4** - Styling
+- **Resend** - Email delivery API
 - **Vercel Blob** - Media storage
 
 

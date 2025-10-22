@@ -22,29 +22,32 @@ export default function PartnerPage() {
     setSubmitMessage("");
 
     try {
-      // Create mailto link with form data
-      const subject = encodeURIComponent("Partnership Inquiry - Flagball");
-      const body = encodeURIComponent(
-        `First Name: ${formData.firstName}\n` +
-          `Email: ${formData.email}\n` +
-          `Organization: ${formData.organization}\n` +
-          `Organization Website: ${formData.organizationWebsite}\n`
-      );
+      const response = await fetch("/api/send-partner-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      window.location.href = `mailto:josh@grovehillresearch.com?subject=${subject}&body=${body}`;
+      const data = await response.json();
 
-      setSubmitMessage("Opening your email client...");
-
-      // Reset form
-      setTimeout(() => {
-        setFormData({
-          firstName: "",
-          email: "",
-          organization: "",
-          organizationWebsite: "",
-        });
-        setSubmitMessage("");
-      }, 2000);
+      if (response.ok) {
+        setSubmitMessage("Thank you! Your inquiry has been sent successfully.");
+        
+        // Reset form
+        setTimeout(() => {
+          setFormData({
+            firstName: "",
+            email: "",
+            organization: "",
+            organizationWebsite: "",
+          });
+          setSubmitMessage("");
+        }, 3000);
+      } else {
+        setSubmitMessage(data.error || "Failed to send. Please try again.");
+      }
     } catch (error) {
       setSubmitMessage("An error occurred. Please try again.");
     } finally {

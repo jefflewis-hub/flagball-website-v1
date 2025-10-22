@@ -90,8 +90,9 @@ flagball-website-v1/
 ### Partner Page (`/partner`)
 - Clean, centered form design
 - Fields: First Name, Email, Organization, Organization Website
-- Form submission via mailto (opens email client)
-- Validation and error handling
+- Direct email delivery via Resend API
+- Real-time validation and error handling
+- Success confirmation messaging
 - Responsive design
 
 ### FAQ Page (`/faq`)
@@ -142,6 +143,7 @@ Navigation has transparent background and white text for visibility over video/g
 - **UI Library**: React 19.1.0
 - **Language**: TypeScript 5
 - **Styling**: Tailwind CSS 4
+- **Email**: Resend API
 - **Video Hosting**: Vercel Blob Storage
 - **Deployment**: Vercel (recommended)
 
@@ -149,11 +151,21 @@ Navigation has transparent background and white text for visibility over video/g
 
 ### Environment Variables
 
-Create a `.env.local` file (optional, for Vercel Blob operations):
+Create a `.env.local` file with the following variables:
 
 ```env
+# Required for sending partnership inquiry emails
+RESEND_API_KEY=your_resend_api_key_here
+
+# Optional for Vercel Blob operations
 BLOB_READ_WRITE_TOKEN=your_token_here
 ```
+
+**Setting up Resend:**
+1. Sign up at [https://resend.com](https://resend.com)
+2. Create an API key at [https://resend.com/api-keys](https://resend.com/api-keys)
+3. Add your API key to `.env.local`
+4. For production, add the environment variable to your hosting provider (e.g., Vercel)
 
 ### Package Scripts
 
@@ -191,13 +203,17 @@ Video URL: `https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_lan
 
 ## 📧 Contact Form
 
-The partnership form (`/partner`) uses a mailto link to send inquiries to:
+The partnership form (`/partner`) automatically sends email inquiries to:
 
 **josh@grovehillresearch.com**
 
-Form submissions open the user's default email client with pre-filled:
-- Subject: "Partnership Inquiry - Flagball"
-- Body: Form data (name, email, organization, website)
+Form submissions are sent directly through the website using Resend API:
+- Subject: "New Partnership Inquiry - Flagball"
+- From: Flagball Partnership Form
+- Reply-To: User's email address
+- Content: Name, email, organization, and website
+
+The form includes validation, loading states, and success/error messaging for a seamless user experience.
 
 ## 🚀 Deployment
 
