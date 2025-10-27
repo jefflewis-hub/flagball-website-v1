@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { IoIosCloseCircle } from "react-icons/io";
+import { FaPlay } from "react-icons/fa";
 
 // Note: Metadata export doesn't work in client components, handle via layout or other means
 
@@ -10,37 +11,28 @@ export default function WatchPage() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showControls, setShowControls] = useState(false);
-
-  // Force play on mount and unmute
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const playVideo = async () => {
-      try {
-        // Start muted for autoplay to work
-        video.muted = true;
-        await video.play();
-        // Unmute after playing starts
-        video.muted = false;
-      } catch (error) {
-        console.log("Autoplay failed, user interaction required:", error);
-      }
-    };
-
-    playVideo();
-  }, []);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
     const handleEnded = () => {
+      setIsPlaying(false);
       router.push("/");
     };
 
+    video.addEventListener("play", handlePlay);
+    video.addEventListener("pause", handlePause);
     video.addEventListener("ended", handleEnded);
-    return () => video.removeEventListener("ended", handleEnded);
+
+    return () => {
+      video.removeEventListener("play", handlePlay);
+      video.removeEventListener("pause", handlePause);
+      video.removeEventListener("ended", handleEnded);
+    };
   }, [router]);
 
   const handleClose = () => {
@@ -49,6 +41,17 @@ export default function WatchPage() {
 
   const toggleControls = () => {
     setShowControls(!showControls);
+  };
+
+  const handlePlayClick = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
   };
 
   return (
@@ -62,18 +65,16 @@ export default function WatchPage() {
         <IoIosCloseCircle size={48} />
       </button>
 
-      {/* Video Container - Click to toggle controls */}
-      <div
-        onClick={toggleControls}
-        className="w-[100dvw] h-[100dvh] md:w-full md:h-full cursor-pointer"
-      >
+      {/* Video Container */}
+      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full">
         {/* Full Screen Video */}
         <video
           ref={videoRef}
           playsInline
           preload="auto"
           controls={showControls}
-          className="w-[100dvw] h-[100dvh] md:w-full md:h-full object-contain"
+          onClick={toggleControls}
+          className="w-[100dvw] h-[100dvh] md:w-full md:h-full object-contain cursor-pointer"
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
@@ -81,6 +82,17 @@ export default function WatchPage() {
           />
           Your browser does not support the video tag.
         </video>
+
+        {/* Play Button Overlay - Shows when video is not playing */}
+        {!isPlaying && (
+          <button
+            onClick={handlePlayClick}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
+            aria-label="Play video"
+          >
+            <FaPlay className="text-white text-6xl ml-2" />
+          </button>
+        )}
       </div>
     </main>
   );
