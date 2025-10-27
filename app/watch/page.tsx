@@ -11,6 +11,26 @@ export default function WatchPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showControls, setShowControls] = useState(false);
 
+  // Force play on mount and unmute
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = async () => {
+      try {
+        // Start muted for autoplay to work
+        video.muted = true;
+        await video.play();
+        // Unmute after playing starts
+        video.muted = false;
+      } catch (error) {
+        console.log("Autoplay failed, user interaction required:", error);
+      }
+    };
+
+    playVideo();
+  }, []);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -50,7 +70,8 @@ export default function WatchPage() {
         {/* Full Screen Video */}
         <video
           ref={videoRef}
-          autoPlay
+          playsInline
+          preload="auto"
           controls={showControls}
           className="w-[100dvw] h-[100dvh] md:w-full md:h-full object-contain"
         >
