@@ -98,12 +98,6 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
               >
                 Partner
               </Link>
-              <Link
-                href="/faq"
-                className="text-white hover:opacity-80 transition-opacity text-lg font-bold"
-              >
-                FAQ
-              </Link>
             </div>
           </div>
 
@@ -135,13 +129,6 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
                   onClick={closeMobileMenu}
                 >
                   Partner
-                </Link>
-                <Link
-                  href="/faq"
-                  className="block w-full px-6 py-4 text-gray-900 hover:bg-gray-100 transition-colors font-semibold text-lg"
-                  onClick={closeMobileMenu}
-                >
-                  FAQ
                 </Link>
               </div>
             </div>
