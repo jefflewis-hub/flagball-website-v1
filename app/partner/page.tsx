@@ -75,7 +75,7 @@ export default function PartnerPage() {
         className="absolute top-0 left-0 w-[100dvw] h-[100dvh] min-[500px]:w-full min-[500px]:h-full bg-cover"
         style={{
           backgroundImage:
-            "url(https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_partner_background_v2.png)",
+            "url(https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_partner_background_v2.webp)",
           backgroundPosition: "center top",
         }}
       />

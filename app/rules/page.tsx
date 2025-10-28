@@ -48,7 +48,7 @@ export default function RulesPage() {
         className="absolute top-0 left-0 w-[100dvw] h-[100dvh] min-[500px]:w-full min-[500px]:h-full bg-cover bg-center"
         style={{
           backgroundImage:
-            "url(https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_rules_background.png)",
+            "url(https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_rules_background.webp)",
         }}
       />
 
