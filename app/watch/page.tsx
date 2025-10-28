@@ -66,7 +66,7 @@ export default function WatchPage() {
       </button>
 
       {/* Video Container */}
-      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full">
+      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full p-8 md:p-16">
         {/* Full Screen Video */}
         <video
           ref={videoRef}
@@ -75,7 +75,7 @@ export default function WatchPage() {
           poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
           controls={showControls}
           onClick={toggleControls}
-          className="w-[100dvw] h-[100dvh] md:w-full md:h-full object-contain cursor-pointer"
+          className="w-full h-full object-contain cursor-pointer"
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
