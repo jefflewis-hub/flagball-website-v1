@@ -86,6 +86,11 @@ export default function Home() {
       } else {
         // Otherwise wait for canplay
         video.addEventListener("canplay", handleCanPlay, { once: true });
+        
+        // Cleanup function
+        return () => {
+          video.removeEventListener("canplay", handleCanPlay);
+        };
       }
     }
   }, [shouldLoadVideo]);
