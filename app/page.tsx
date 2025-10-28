@@ -2,16 +2,13 @@
 
 import Navigation from "@/components/Navigation";
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { FaCirclePlay } from "react-icons/fa6";
-import { FaStopCircle } from "react-icons/fa";
 
 export default function Home() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [showControls, setShowControls] = useState(true);
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [shouldLoadPoster, setShouldLoadPoster] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -26,35 +23,6 @@ export default function Home() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const handlePlayClick = () => {
-    if (!shouldLoadVideo) {
-      // Load video on first click
-      setShouldLoadVideo(true);
-    } else if (videoRef.current) {
-      // Video already loaded, just play
-      videoRef.current.play()
-        .then(() => {
-          setIsPlaying(true);
-          setShowControls(false);
-        })
-        .catch((e) => console.log("Play failed:", e));
-    }
-  };
-
-  const handleStopClick = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-      setShowControls(true);
-    }
-  };
-
-  const handleVideoClick = () => {
-    if (isPlaying) {
-      setShowControls(!showControls);
-    }
-  };
 
   // Detect scroll
   useEffect(() => {
@@ -75,37 +43,9 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Load video and auto-play when ready (single click on both desktop and mobile)
-  useEffect(() => {
-    if (shouldLoadVideo && videoRef.current) {
-      const video = videoRef.current;
-      
-      const handleCanPlay = () => {
-        video.play()
-          .then(() => {
-            setIsPlaying(true);
-            setShowControls(false);
-          })
-          .catch((error) => {
-            console.log("Autoplay failed:", error);
-            setIsPlaying(false);
-          });
-      };
-
-      // Wait for video to be ready to play
-      if (video.readyState >= 2) {
-        // Video is already ready
-        handleCanPlay();
-      } else {
-        // Wait for loadeddata event
-        video.addEventListener("loadeddata", handleCanPlay, { once: true });
-        
-        return () => {
-          video.removeEventListener("loadeddata", handleCanPlay);
-        };
-      }
-    }
-  }, [shouldLoadVideo]);
+  const handleWatchClick = () => {
+    router.push("/watch");
+  };
 
   return (
     <main className="relative w-[100vw] md:w-screen overflow-x-hidden">
@@ -345,12 +285,12 @@ export default function Home() {
           </h2>
           <div>
             <div
-              className="relative w-full cursor-pointer bg-gray-100 rounded-lg"
+              className="relative w-full cursor-pointer bg-gray-100 rounded-lg hover:opacity-90 transition-opacity"
               style={{ paddingBottom: "56.25%" }}
-              onClick={handleVideoClick}
+              onClick={handleWatchClick}
             >
               {/* Poster image - loads immediately on mount */}
-              {!shouldLoadVideo && shouldLoadPoster && (
+              {shouldLoadPoster && (
                 <Image
                   src="/poster.jpg"
                   alt="Flagball Story Video"
@@ -362,53 +302,18 @@ export default function Home() {
               )}
 
               {/* Placeholder while poster loads */}
-              {!shouldLoadVideo && !shouldLoadPoster && (
+              {!shouldLoadPoster && (
                 <div className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-gray-200" />
               )}
 
-              {/* Video - only loads when user clicks play */}
-              {shouldLoadVideo && (
-                <video
-                  ref={videoRef}
-                  preload="auto"
-                  playsInline
-                  className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl bg-white object-cover"
-                >
-                  <source
-                    src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-              )}
-
-              {/* Custom Play Button - Always visible when not playing */}
-              {!isPlaying && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePlayClick();
-                  }}
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white hover:opacity-80 transition-opacity z-10"
-                  aria-label="Play video"
-                >
-                  <FaCirclePlay size={64} />
-                </button>
-              )}
-
-              {/* Custom Stop Button - Only visible on click while playing */}
-              {isPlaying && showControls && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleStopClick();
-                  }}
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white hover:opacity-80 transition-opacity z-10"
-                  aria-label="Stop video"
-                >
-                  <FaStopCircle size={64} />
-                </button>
-              )}
+              {/* Play Button - Always visible */}
+              <button
+                onClick={handleWatchClick}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white hover:opacity-80 transition-opacity z-10"
+                aria-label="Watch video"
+              >
+                <FaCirclePlay size={64} />
+              </button>
             </div>
           </div>
         </div>
