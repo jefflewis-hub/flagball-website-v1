@@ -65,40 +65,35 @@ export default function WatchPage() {
         <IoIosCloseCircle size={48} />
       </button>
 
-      {/* Video Container */}
-      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full p-16 md:p-24 flex items-center justify-center">
-        {/* Centered Container for Logo/Video and Play Button */}
-        <div className="w-full max-w-[500px] flex flex-col items-center justify-center gap-8">
-          {/* Video with Logo Poster */}
-          <div className="relative w-full">
-            <video
-              ref={videoRef}
-              playsInline
-              preload="auto"
-              poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
-              controls={showControls}
-              onClick={toggleControls}
-              className="w-full h-auto object-contain cursor-pointer"
-            >
-              <source
-                src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
-                type="video/mp4"
-              />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+      {/* Video Container - Full Screen */}
+      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full">
+        {/* Full Screen Video */}
+        <video
+          ref={videoRef}
+          playsInline
+          preload="auto"
+          poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
+          controls={showControls}
+          onClick={toggleControls}
+          className="absolute top-0 left-0 w-full h-full object-contain cursor-pointer bg-black"
+        >
+          <source
+            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
 
-          {/* Play Button - Shows when video is not playing, positioned below logo with gap */}
-          {!isPlaying && (
-            <button
-              onClick={handlePlayClick}
-              className="bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
-              aria-label="Play video"
-            >
-              <FaPlay className="text-white text-6xl ml-2" />
-            </button>
-          )}
-        </div>
+        {/* Play Button - Fixed position at bottom center for stable positioning */}
+        {!isPlaying && (
+          <button
+            onClick={handlePlayClick}
+            className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300 z-40"
+            aria-label="Play video"
+          >
+            <FaPlay className="text-white text-6xl ml-2" />
+          </button>
+        )}
       </div>
     </main>
   );
