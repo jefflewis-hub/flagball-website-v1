@@ -72,6 +72,7 @@ export default function WatchPage() {
           ref={videoRef}
           playsInline
           preload="auto"
+          poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
           controls={showControls}
           onClick={toggleControls}
           className="w-[100dvw] h-[100dvh] md:w-full md:h-full object-contain cursor-pointer"
@@ -83,11 +84,11 @@ export default function WatchPage() {
           Your browser does not support the video tag.
         </video>
 
-        {/* Play Button Overlay - Shows when video is not playing */}
+        {/* Play Button Overlay - Shows when video is not playing, positioned below center to not cover logo */}
         {!isPlaying && (
           <button
             onClick={handlePlayClick}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
+            className="absolute top-[65%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
             aria-label="Play video"
           >
             <FaPlay className="text-white text-6xl ml-2" />
