@@ -20,7 +20,7 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
       {/* Backdrop overlay for mobile menu - only below the menu */}
       {isMobileMenuOpen && (
         <div
-          className="fixed left-0 right-0 bottom-0 top-[19rem] bg-black/80 z-40 md:hidden"
+          className="fixed left-0 right-0 bottom-0 top-[15rem] bg-black/80 z-40 md:hidden"
           onClick={closeMobileMenu}
         />
       )}
@@ -104,7 +104,7 @@ export default function Navigation({ bgColor }: { bgColor?: string }) {
           {/* Mobile Menu */}
           <div
             className={`fixed left-0 right-0 top-[4.5rem] md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-              isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              isMobileMenuOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
             }`}
           >
             <div className="bg-white shadow-lg">
