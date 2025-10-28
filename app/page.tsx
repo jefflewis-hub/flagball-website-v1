@@ -29,16 +29,16 @@ export default function Home() {
 
   const handlePlayClick = () => {
     if (!shouldLoadVideo) {
-      // First click: trigger video load - useEffect will auto-play once ready
+      // Load video on first click
       setShouldLoadVideo(true);
     } else if (videoRef.current) {
-      // Video already loaded but not playing (autoplay was prevented on mobile)
+      // Video already loaded, just play
       videoRef.current.play()
         .then(() => {
           setIsPlaying(true);
           setShowControls(false);
         })
-        .catch((e) => console.log("Manual play failed:", e));
+        .catch((e) => console.log("Play failed:", e));
     }
   };
 
@@ -75,40 +75,33 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-play video once it's loaded (fixes double-click issue)
+  // Load video and auto-play when ready (single click on both desktop and mobile)
   useEffect(() => {
     if (shouldLoadVideo && videoRef.current) {
       const video = videoRef.current;
-
+      
       const handleCanPlay = () => {
-        // Ensure video is ready and attempt to play
-        const playPromise = video.play();
-        
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setIsPlaying(true);
-              setShowControls(false);
-            })
-            .catch((error) => {
-              // Auto-play was prevented (common on mobile)
-              console.log("Autoplay prevented:", error);
-              // Keep the play button visible so user can manually start
-              setIsPlaying(false);
-            });
-        }
+        video.play()
+          .then(() => {
+            setIsPlaying(true);
+            setShowControls(false);
+          })
+          .catch((error) => {
+            console.log("Autoplay failed:", error);
+            setIsPlaying(false);
+          });
       };
 
-      // If already ready, play immediately
-      if (video.readyState >= 3) {
+      // Wait for video to be ready to play
+      if (video.readyState >= 2) {
+        // Video is already ready
         handleCanPlay();
       } else {
-        // Otherwise wait for canplay
-        video.addEventListener("canplay", handleCanPlay, { once: true });
+        // Wait for loadeddata event
+        video.addEventListener("loadeddata", handleCanPlay, { once: true });
         
-        // Cleanup function
         return () => {
-          video.removeEventListener("canplay", handleCanPlay);
+          video.removeEventListener("loadeddata", handleCanPlay);
         };
       }
     }
