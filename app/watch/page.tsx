@@ -68,29 +68,31 @@ export default function WatchPage() {
       {/* Video Container */}
       <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full p-16 md:p-24 flex items-center justify-center">
         {/* Centered Container for Logo/Video and Play Button */}
-        <div className="relative w-full max-w-[500px] flex flex-col items-center justify-center">
-          {/* Full Screen Video */}
-          <video
-            ref={videoRef}
-            playsInline
-            preload="auto"
-            poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
-            controls={showControls}
-            onClick={toggleControls}
-            className="w-full h-auto object-contain cursor-pointer"
-          >
-            <source
-              src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
-          </video>
+        <div className="w-full max-w-[500px] flex flex-col items-center justify-center gap-8">
+          {/* Video with Logo Poster */}
+          <div className="relative w-full">
+            <video
+              ref={videoRef}
+              playsInline
+              preload="auto"
+              poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
+              controls={showControls}
+              onClick={toggleControls}
+              className="w-full h-auto object-contain cursor-pointer"
+            >
+              <source
+                src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+          </div>
 
-          {/* Play Button Overlay - Shows when video is not playing, centered below logo */}
+          {/* Play Button - Shows when video is not playing, positioned below logo with gap */}
           {!isPlaying && (
             <button
               onClick={handlePlayClick}
-              className="absolute top-[65%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
+              className="bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
               aria-label="Play video"
             >
               <FaPlay className="text-white text-6xl ml-2" />
