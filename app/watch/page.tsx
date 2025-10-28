@@ -72,7 +72,7 @@ export default function WatchPage() {
           ref={videoRef}
           playsInline
           preload="auto"
-          poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
+          poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
           controls={showControls}
           onClick={toggleControls}
           className={`cursor-pointer bg-black ${
