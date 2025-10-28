@@ -66,34 +66,37 @@ export default function WatchPage() {
       </button>
 
       {/* Video Container */}
-      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full p-12 md:p-20 flex items-center justify-center">
-        {/* Full Screen Video */}
-        <video
-          ref={videoRef}
-          playsInline
-          preload="auto"
-          poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
-          controls={showControls}
-          onClick={toggleControls}
-          className="w-full h-full max-w-[600px] object-contain cursor-pointer"
-        >
-          <source
-            src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
-            type="video/mp4"
-          />
-          Your browser does not support the video tag.
-        </video>
-
-        {/* Play Button Overlay - Shows when video is not playing, positioned below center to not cover logo */}
-        {!isPlaying && (
-          <button
-            onClick={handlePlayClick}
-            className="absolute top-[65%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
-            aria-label="Play video"
+      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full p-16 md:p-24 flex items-center justify-center">
+        {/* Centered Container for Logo/Video and Play Button */}
+        <div className="relative w-full max-w-[500px] flex flex-col items-center justify-center">
+          {/* Full Screen Video */}
+          <video
+            ref={videoRef}
+            playsInline
+            preload="auto"
+            poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
+            controls={showControls}
+            onClick={toggleControls}
+            className="w-full h-auto object-contain cursor-pointer"
           >
-            <FaPlay className="text-white text-6xl ml-2" />
-          </button>
-        )}
+            <source
+              src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+
+          {/* Play Button Overlay - Shows when video is not playing, centered below logo */}
+          {!isPlaying && (
+            <button
+              onClick={handlePlayClick}
+              className="absolute top-[65%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
+              aria-label="Play video"
+            >
+              <FaPlay className="text-white text-6xl ml-2" />
+            </button>
+          )}
+        </div>
       </div>
     </main>
   );
