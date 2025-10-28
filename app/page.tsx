@@ -28,15 +28,8 @@ export default function Home() {
   }, []);
 
   const handlePlayClick = () => {
-    if (!shouldLoadVideo) {
-      // First click: trigger video load (useEffect will auto-play)
-      setShouldLoadVideo(true);
-    } else if (videoRef.current) {
-      // Subsequent clicks: just play
-      videoRef.current.play();
-      setIsPlaying(true);
-      setShowControls(false);
-    }
+    // Trigger video load - useEffect will auto-play once ready
+    setShouldLoadVideo(true);
   };
 
   const handleStopClick = () => {
