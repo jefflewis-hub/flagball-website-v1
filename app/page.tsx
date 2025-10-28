@@ -28,8 +28,18 @@ export default function Home() {
   }, []);
 
   const handlePlayClick = () => {
-    // Trigger video load - useEffect will auto-play once ready
-    setShouldLoadVideo(true);
+    if (!shouldLoadVideo) {
+      // First click: trigger video load - useEffect will auto-play once ready
+      setShouldLoadVideo(true);
+    } else if (videoRef.current) {
+      // Video already loaded but not playing (autoplay was prevented on mobile)
+      videoRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+          setShowControls(false);
+        })
+        .catch((e) => console.log("Manual play failed:", e));
+    }
   };
 
   const handleStopClick = () => {
@@ -56,11 +66,11 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Delay poster image loading until after critical resources
+  // Load poster image immediately after mount
   useEffect(() => {
     const timer = setTimeout(() => {
       setShouldLoadPoster(true);
-    }, 3000); // Wait 3 seconds after page load
+    }, 100); // Load poster almost immediately
 
     return () => clearTimeout(timer);
   }, []);
@@ -71,13 +81,22 @@ export default function Home() {
       const video = videoRef.current;
 
       const handleCanPlay = () => {
-        video
-          .play()
-          .then(() => {
-            setIsPlaying(true);
-            setShowControls(false);
-          })
-          .catch((e) => console.log("Play failed:", e));
+        // Ensure video is ready and attempt to play
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              setShowControls(false);
+            })
+            .catch((error) => {
+              // Auto-play was prevented (common on mobile)
+              console.log("Autoplay prevented:", error);
+              // Keep the play button visible so user can manually start
+              setIsPlaying(false);
+            });
+        }
       };
 
       // If already ready, play immediately
@@ -337,7 +356,7 @@ export default function Home() {
               style={{ paddingBottom: "56.25%" }}
               onClick={handleVideoClick}
             >
-              {/* Lazy-loaded poster image - loads 3s after page load */}
+              {/* Poster image - loads immediately on mount */}
               {!shouldLoadVideo && shouldLoadPoster && (
                 <Image
                   src="/poster.jpg"
