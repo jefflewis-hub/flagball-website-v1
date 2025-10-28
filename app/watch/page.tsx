@@ -66,7 +66,7 @@ export default function WatchPage() {
       </button>
 
       {/* Video Container - Full Screen */}
-      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full">
+      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full flex items-center justify-center">
         {/* Full Screen Video */}
         <video
           ref={videoRef}
@@ -75,7 +75,11 @@ export default function WatchPage() {
           poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_v1.png"
           controls={showControls}
           onClick={toggleControls}
-          className="absolute top-0 left-0 w-full h-full object-contain cursor-pointer bg-black"
+          className={`cursor-pointer bg-black ${
+            isPlaying
+              ? "absolute top-0 left-0 w-full h-full object-contain"
+              : "w-full max-w-[400px] h-auto object-contain"
+          }`}
         >
           <source
             src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/flagball_trailer_video.mp4"
@@ -84,11 +88,11 @@ export default function WatchPage() {
           Your browser does not support the video tag.
         </video>
 
-        {/* Play Button - Fixed position at bottom center for stable positioning */}
+        {/* Play Button - Fixed at bottom for stable positioning */}
         {!isPlaying && (
           <button
             onClick={handlePlayClick}
-            className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300 z-40"
+            className="absolute bottom-24 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300 z-40"
             aria-label="Play video"
           >
             <FaPlay className="text-white text-6xl ml-2" />
