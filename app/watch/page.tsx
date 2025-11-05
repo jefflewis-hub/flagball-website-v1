@@ -66,19 +66,18 @@ export default function WatchPage() {
       </button>
 
       {/* Video Container - Full Screen */}
-      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full md:flex md:items-center md:justify-center">
+      <div className="relative w-[100dvw] h-[100dvh] md:w-full md:h-full flex items-center justify-center">
         {/* Full Screen Video */}
         <video
           ref={videoRef}
           playsInline
           preload="auto"
-          poster="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
           controls={showControls}
           onClick={toggleControls}
           className={`cursor-pointer bg-black ${
             isPlaying
               ? "absolute top-0 left-0 w-full h-full object-contain"
-              : "absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] px-10 h-auto object-contain md:static md:translate-x-0 md:translate-y-0 md:px-0"
+              : "hidden"
           }`}
         >
           <source
@@ -88,15 +87,25 @@ export default function WatchPage() {
           Your browser does not support the video tag.
         </video>
 
-        {/* Play Button - Positioned just below center on mobile, fixed at bottom on desktop */}
+        {/* Logo and Play Button Container - Centered */}
         {!isPlaying && (
-          <button
-            onClick={handlePlayClick}
-            className="absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 md:top-auto md:bottom-24 md:translate-y-0 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300 z-40"
-            aria-label="Play video"
-          >
-            <FaPlay className="text-white text-6xl ml-2" />
-          </button>
+          <div className="flex flex-col items-center justify-center gap-6">
+            {/* Flagball Logo */}
+            <img
+              src="https://mdvxiezrgfyljoqh.public.blob.vercel-storage.com/logo_svg_v1.svg"
+              alt="Flagball Logo"
+              className="w-full max-w-[400px] px-10 md:px-0 h-auto"
+            />
+
+            {/* Play Button */}
+            <button
+              onClick={handlePlayClick}
+              className="bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full p-8 transition-all duration-300"
+              aria-label="Play video"
+            >
+              <FaPlay className="text-white text-6xl ml-2" />
+            </button>
+          </div>
         )}
       </div>
     </main>
