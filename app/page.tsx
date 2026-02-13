@@ -236,7 +236,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The League Section */}
+      {/* The League Section - COMMENTED OUT
       <section className="bg-gray-50 py-16 md:py-24 px-6 md:px-4">
         <div className="max-w-[700px] mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-flagball-red mb-12 md:mb-16">
@@ -276,6 +276,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Our Story Section */}
       <section className="bg-white py-16 md:py-24 px-6 md:px-4">
