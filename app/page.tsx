@@ -103,7 +103,7 @@ export default function Home() {
             priority
           />
           <p className="text-white text-xl md:text-2xl tracking-wide font-medium">
-            Coming June 2026
+            Coming 2026
           </p>
         </div>
       </section>
