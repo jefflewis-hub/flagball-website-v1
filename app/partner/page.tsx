@@ -183,6 +183,11 @@ export default function PartnerPage() {
                   >
                     Submit
                   </button>
+                  {submitMessage && (
+                    <p className="mt-3 text-center text-red-600 font-medium text-sm min-[500px]:text-base">
+                      {submitMessage}
+                    </p>
+                  )}
                 </div>
               </>
             )}

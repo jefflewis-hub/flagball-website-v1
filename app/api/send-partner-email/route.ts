@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Flagball Partnership Form <partnerships@flagball.com>',
+      from: 'Flagball Partnership Form <onboarding@resend.dev>',
       to: ['josh@grovehillresearch.com'],
       replyTo: email,
       subject: 'New Partnership Inquiry - Flagball',
